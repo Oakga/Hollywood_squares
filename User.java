@@ -152,4 +152,8 @@ public class User {
       writer.write(newtext);
       writer.close();
    }//updateDB
+<<<<<<< HEAD
 }//User class
+=======
+}//User class
+>>>>>>> b27a7db7a74331733c4ef46ce4f0e73e424e2f56
