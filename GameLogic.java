@@ -14,7 +14,10 @@ public class GameLogic{
 	private int roundsWonP1
 	private int roundsWonP2
 	private TimerObject Timer
-
+	private User myUserClass=new User(args[1]); 
+	//A>dont know if i can add args[1] here, if yes we can leave it, if no need to 
+	//document User(string in) changes to User() and i will hardcode the text file into the code and document that, regardless
+	//need to document we never made new variable of user class in gamelogic class- Tyler
 	public GameLogic(){
 
 	}
