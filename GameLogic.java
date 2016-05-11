@@ -140,7 +140,7 @@ public class GameLogic{
 	
 	}
 	//not sure what int i is but id assume this is how its supposed to look- Tyler
-	private int GameWonCheck(int i){
+	private int GameWonCheck(){//remove int i according to crd
 	if(roundsWonP1==2){
 		return 1;
 	}//if
