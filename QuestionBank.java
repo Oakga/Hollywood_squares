@@ -99,7 +99,7 @@ public class QuestionBank {
 	//checks if an answer is right or wrong given by the celebrity
 	public boolean checkAnswer(String answer, LinkedList myLinkedList){
 		
-		return myLinkedList.contains(answer);
+		return myLinkedList.contains(answer.toLowerCase());
 			
 	}
 	
