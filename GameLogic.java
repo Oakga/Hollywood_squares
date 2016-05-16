@@ -16,23 +16,31 @@ public class GameLogic {
 	private int roundsWonP1;
 	private int roundsWonP2;
 	private Thread Timer;
+	private User myUserClass=new User(args[1]); 
+	//A>dont know if i can add args[1] here, if yes we can leave it, if no need to 
+	//document User(string in) changes to User() and i will hardcode the text file into the code and document that, regardless
+	//need to document we never made new variable of user class in gamelogic class- Tyler
 
-	public GameLogic(TicTacToeGui){
-		Display
-		
-		
+	public GameLogic(TicTacToeGui GUI){
+		Display=GUI;
 	}
-
+	
+	// Purpose: end turn of the current player (act as a wrapper method)
+		private void endTurn() {
+			
+		}
+	//Purpose: set numbers of player
 	public void setMultiplayer(boolean m) {
 		Multiplayer = m;
 	}
-
+	//Purpose: act as a wrapper class to start the game
 	private void StartGame() {
-
+		UpdateGameboard();//initialize the gameboard
 	}
-
+	
+	//Purpose: act as a wrapper class to start the game
 	private void StartRounds() {
-
+		UpdateRounds();
 	}
 
 	// Purpose: Update Round number
@@ -94,25 +102,29 @@ public class GameLogic {
 
 	// Purpose: Start Timer
 	private void StartTimer() {
-
+		this.Timer=new Thread();
+		Timer.start();
+		Timer.sleep(100000);
+		TimeUp();
 	}
 
+	//Purpose: to end the turn
 	private void TimeUp() {
-
+		endTurn();
 	}
 
 	private void KillTimer() {
-
+		Timer.interrupt();
 	}
 
 	// Purpose: Start turn (act as a wrapper method)
 	private void ContinueTurn() {
-
+		
 	}
 
 	// Purpose: player pick square (act as a wrapper method)
 	public boolean PickSquare(int square) {
-
+		currentSquare=square;
 	}
 
 	// Purpose: to check if the square is valid to pick
@@ -123,29 +135,30 @@ public class GameLogic {
 			return false;
 	}
 
+	//Purpose: to update the scoreBoard with whoever won
 	private void UpdateScoreBoard() {
-
+		
 	}
-	//
-	private int RoundWonCheck() {
-		if(gameBoard[0]=gameBoard[1]=gameBoard[2]||	//across top
-				   gameBoard[3]=gameBoard[4]=gameBoard[5]||	//across middle
-				   gameBoard[6]=gameBoard[7]=gameBoard[8]||	//across bottom
-				   gameBoard[0]=gameBoard[3]=gameBoard[6]||	//down left
-				   gameBoard[1]=gameBoard[4]=gameBoard[7]||	//down middle
-				   gameBoard[2]=gameBoard[5]=gameBoard[8]||	//down right
-				   gameBoard[0]=gameBoard[4]=gameBoard[8]||	//diagonal L>R
-				   gameBoard[2]=gameBoard[4]=gameBoard[6]){	//diagonal R>L
-				   	return true;
-				   }//if
-				   else{
-				   	return false;
-				   }//else
-				}//RoundWonCheck
 	
-
+	
+	//Purpose: to check the gameBoard if the round is over:return winner player icon otherwise n
+	//Changes: change return type to char 
+	//thoughts: might need to fill the entire board intially with 'n'
+	private char RoundWonCheck() {
+		if(checkWinner(0,1,2))return gameBoard[0];
+		if(checkWinner(3,4,5))return gameBoard[3];
+		if(checkWinner(6,7,8))return gameBoard[6];
+		if(checkWinner(0,3,6))return gameBoard[0];
+		if(checkWinner(1,4,7))return gameBoard[1];
+		if(checkWinner(2,5,8))return gameBoard[2];
+		if(checkWinner(0,4,8))return gameBoard[0];
+		if(checkWinner(2,4,6))return gameBoard[2];
+		return 'n';
+				}
+	
+	//Purpose: give answer 
 	private boolean AnswerQuestion(Boolean a) {
-
+		KillTimer();
 	}
 
 	// Purpose: update the gameBoard square with the shape picked
@@ -153,10 +166,12 @@ public class GameLogic {
 		gameBoard[currentSquare] = shape;
 	}
 
-	// Purpose: Unnecessary and might be removing this in future changes
-	// Changes: might remove this method
+	
+	// Purpose:fill the entire board with n in the beginning
 	private void UpdateGameboard() {
-
+		for(int i=0;i<9;i++){
+			gameBoard[i]='n';
+		}
 	}
 
 	// Purpose: update GUI accordingly with the player picked choice (act as a
@@ -164,17 +179,16 @@ public class GameLogic {
 	// Needs: In GUI, GUI.updateBoardView()  doesn't have this method not sure how the general program overflow will implement this
 	private void UpdateBoardBasedOnAnswer() {
 		GUI.updateBoardView(); //update GUI board display
-
 	}
 
-	// Purpose: end turn of the current player (act as a wrapper method)
-	private void endTurn() {
-
-	}
-
-	// Purpose: check Winner
-	private int checkWinner() {
-
+	// Purpose: check Winner of the line (will be called by RoundWoncheck)
+	//changes: changed return type and parameter 
+	private boolean checkWinner(int square1,int square2,int square3) {
+		if(gameBoard[square1]==gameBoard[square2]){
+			if(gameBoard[square2]==gameBoard[square3])return true;
+			else return false;
+		}
+		else return false;
 	}
 
 	// Purpose: check who win the game return 1 if p1 wins, return 2 if p2 wins ,return 0 if nobody wins
