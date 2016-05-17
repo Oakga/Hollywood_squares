@@ -38,7 +38,8 @@ public class GameLogic {
 	}
 
 	// Purpose: act as a wrapper class to start the game
-	private void StartGame() {
+	//Changes make public
+	public void StartGame() {
 		// login
 		// choose mutiplayer
 		// start round
@@ -56,11 +57,13 @@ public class GameLogic {
 		//player pick a square
 		// get question
 		// celebrity answer
+		//Start timer
 		// return control to the gui for player to answer
 	}
 
 	// Purpose: gui call this method after player give answer
 	private void ContinueTurn(String answer) {
+		//end timer
 		// player answer
 		// make consequences according to the answer
 	}
@@ -145,7 +148,10 @@ public class GameLogic {
 
 	// Purpose: to end the turn
 	private void TimeUp() {
-		endTurn();
+		int i;
+		if(CurrentPlayer=true){i=1;}
+		else i=2;
+		endTurn(i);//end turn for player i
 	}// done
 
 	private void KillTimer() {
