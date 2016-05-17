@@ -19,8 +19,8 @@ public class GameLogic {
 	private int roundsWonP2;
 	private Timer TimerObject; // DOCUMENT CHANGE! -Flipped the order of the words since it is meant to be of type Timer
 	// JASON: I don't believe we need the next two variables and therefore we should try and remove them
-	public Player player1;// new
-	public Player player2;// new
+//	public Player player1;// new
+//	public Player player2;// new
 	// private User myUserClass=new User(args[1]);
 	// A>dont know if i can add args[1] here, if yes we can leave it, if no need
 	// to
@@ -36,13 +36,15 @@ public class GameLogic {
 		scoreBoard = new int[2];
 		SecretSquareSetup();
 		myQuestionBank = new QuestionBank("QuestionDB");
-		Display = new TicTacToeGui();
+		// Display = new TicTacToeGui();
 		// .setVisible(true);
 	}
 
 	// Purpose: act as a wrapper class to start the game
 	//Changes make public
 	public void StartGame() {
+		Display = new TicTacToeGui();
+		Display.setVisible(true);
 		// login
 		// choose mutiplayer
 		// start round
