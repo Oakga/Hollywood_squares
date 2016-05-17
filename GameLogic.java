@@ -163,8 +163,9 @@ public class GameLogic {
 	}// done
 
 	private void KillTimer() {
-		Timer.interrupt();
-	}// done
+		// NEEDS TO BE REWRITTEN
+		//Timer.interrupt();
+	}// 
 
 	// Purpose: player pick square if it is empty(act as a wrapper method)
 	public boolean PickSquare(int square) {
