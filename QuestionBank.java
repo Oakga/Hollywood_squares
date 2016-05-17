@@ -94,11 +94,12 @@ public class QuestionBank {
 
 		}
 		
+		current = removedQues;
 		return removedQues;	
 	}
 	
 	//checks if an answer is right or wrong given by the celebrity
-	public boolean checkAnswer(String answer, LinkedList myLinkedList){
+	public boolean checkAnswer(String answer){
 		
 		return current.contains(answer.toLowerCase());
 			
