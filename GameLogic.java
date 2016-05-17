@@ -35,7 +35,9 @@ public class GameLogic {
 		gameBoard = new char[8];
 		scoreBoard = new int[2];
 		SecretSquareSetup();
-		myQuestionBank = new QuestionBank("QuestionDB");
+		String args[] = new String[1];
+		args[0] = new String("QuestionDB");
+		myQuestionBank = new QuestionBank(args);
 		// Display = new TicTacToeGui();
 		// .setVisible(true);
 	}
