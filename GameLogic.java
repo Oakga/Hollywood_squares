@@ -142,15 +142,16 @@ public class GameLogic {
 
 	// Purpose: Start Timer
 	private void StartTimer() {
-		this.Timer = new Thread();
+		// This function needs to be updated to use the timers properly. 
+		/*this.Timer = new Thread();
 		Timer.start();
 		try {
 			Thread.sleep(100000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		TimeUp();
+		}*/
+		// TimeUp();
 	}// done
 
 	// Purpose: to end the turn
