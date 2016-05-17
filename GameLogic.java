@@ -33,7 +33,7 @@ public class GameLogic {
 		myQuestionBank=new QuestionBank("QuestionDB");
 		Display=GUI;
 	}
-	//Purpose: act as a wrapper class to start the game
+	//Purpose: act as a wrapper class to start the game-i.e call other methods to stimulate a turn
 		private void StartGame() {
 			UpdateGameboard();//initialize the gameboard
 			
