@@ -13,7 +13,7 @@ public class GameLogic {
 	private QuestionBank myQuestionBank;
 	private TicTacToeGui Display;
 	private boolean Multiplayer;
-	private String CorrectAnswer;// Change to String
+	private Boolean CorrectAnswer;// Changed back to String
 	private int roundsWonP1;
 	private int roundsWonP2;
 	private Thread Timer;
