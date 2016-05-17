@@ -45,7 +45,7 @@ public class GameLogic {
 	// Purpose: act as a wrapper class to start the game
 	//Changes make public
 	public void StartGame() {
-		Display = new TicTacToeGui();
+		Display = new TicTacToeGui(this);
 		Display.setVisible(true);
 		// login
 		// choose mutiplayer
