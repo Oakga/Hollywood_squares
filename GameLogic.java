@@ -29,14 +29,15 @@ public class GameLogic {
 	// need to document we never made new variable of user class in gamelogic
 	// class- Tyler
 
-	public GameLogic(TicTacToeGui GUI) {
+	public GameLogic() {
 		currentRound = 1;
 		currentSquare = 1;
 		gameBoard = new char[8];
 		scoreBoard = new int[2];
 		SecretSquareSetup();
 		myQuestionBank = new QuestionBank("QuestionDB");
-		Display = GUI;
+		Display = new TicTacToeGui();
+		// .setVisible(true);
 	}
 
 	// Purpose: act as a wrapper class to start the game
