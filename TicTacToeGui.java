@@ -233,7 +233,10 @@ public class TicTacToeGui extends JFrame  {
 		mainFrame.addLayoutComponent(roundOverPanel, "roundOverPanel");
 		mainFrame.show(masterPane, "roundOverPanel");
 	}
-		
+	
+	public void updateBoardView(){
+		// FIller method to make it compile this method should update the board based on the answer which the player selected
+	}
 	
 	public void ToStatsFrame( GameLogic gl)
 	{
