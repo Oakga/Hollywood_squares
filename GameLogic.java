@@ -17,7 +17,8 @@ public class GameLogic {
 	private Boolean CorrectAnswer;// Changed back to String
 	private int roundsWonP1;
 	private int roundsWonP2;
-	private Timer TimerObject; //Flipped the order of the words since it is meant to be of type Timer
+	private Timer TimerObject; // DOCUMENT CHANGE! -Flipped the order of the words since it is meant to be of type Timer
+	// JASON: I don't believe we need the next two variables and therefore we should try and remove them
 	public Player player1;// new
 	public Player player2;// new
 	// private User myUserClass=new User(args[1]);
