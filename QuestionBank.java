@@ -40,7 +40,6 @@ public class QuestionBank {
 		String splitString;
 		myHashTable = new Hashtable<Integer, LinkedList>();
 		
-		
 		try{
 			Scanner inFile = new Scanner(new FileReader(args[0]));
 			
