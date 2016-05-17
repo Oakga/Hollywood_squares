@@ -1,5 +1,6 @@
 import java.util.LinkedList;
 import java.util.Random;
+import java.util.Timer;
 
 public class GameLogic {
 	private int currentRound;
@@ -16,7 +17,7 @@ public class GameLogic {
 	private Boolean CorrectAnswer;// Changed back to String
 	private int roundsWonP1;
 	private int roundsWonP2;
-	private Thread Timer;
+	private Timer TimerObject; //Flipped the order of the words since it is meant to be of type Timer
 	public Player player1;// new
 	public Player player2;// new
 	// private User myUserClass=new User(args[1]);
