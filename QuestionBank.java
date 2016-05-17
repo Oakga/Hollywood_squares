@@ -40,7 +40,6 @@ public class QuestionBank {
 		String splitString;
 		myHashTable = new Hashtable<Integer, LinkedList>();
 		
-		
 		try{
 			Scanner inFile = new Scanner(new FileReader(args[0]));
 			
@@ -66,7 +65,7 @@ public class QuestionBank {
 		}//try
 		
 		catch(FileNotFoundException e){
-			System.out.println("File not Found!");
+			System.out.println("Question Bank File not Found!");
 			
 		}//catch
 		

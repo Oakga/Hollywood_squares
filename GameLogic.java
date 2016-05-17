@@ -14,13 +14,13 @@ public class GameLogic {
 	private QuestionBank myQuestionBank;
 	private TicTacToeGui Display;
 	private boolean Multiplayer;
-	private Boolean CorrectAnswer;// Changed back to String
+	private Boolean CorrectAnswer;// Changed back to Boolean from string
 	private int roundsWonP1;
 	private int roundsWonP2;
 	private Timer TimerObject; // DOCUMENT CHANGE! -Flipped the order of the words since it is meant to be of type Timer
 	// JASON: I don't believe we need the next two variables and therefore we should try and remove them
-	public Player player1;// new
-	public Player player2;// new
+//	public Player player1;// new
+//	public Player player2;// new
 	// private User myUserClass=new User(args[1]);
 	// A>dont know if i can add args[1] here, if yes we can leave it, if no need
 	// to
@@ -35,14 +35,18 @@ public class GameLogic {
 		gameBoard = new char[8];
 		scoreBoard = new int[2];
 		SecretSquareSetup();
-		myQuestionBank = new QuestionBank("QuestionDB");
-		Display = new TicTacToeGui();
+		String args[] = new String[1];
+		args[0] = new String("QuestionDB.txt");
+		myQuestionBank = new QuestionBank(args);
+		// Display = new TicTacToeGui();
 		// .setVisible(true);
 	}
 
 	// Purpose: act as a wrapper class to start the game
 	//Changes make public
 	public void StartGame() {
+		Display = new TicTacToeGui(this);
+		Display.setVisible(true);
 		// login
 		// choose mutiplayer
 		// start round
@@ -98,7 +102,7 @@ public class GameLogic {
 
 	// Purpose: Set up Secret Square location randomly
 	private void SecretSquareSetup() {
-		Random rand = null;
+		Random rand = new Random();
 		SecretSquare = rand.nextInt((8 - 0) + 1) + 0;
 	}// done
 
@@ -138,15 +142,16 @@ public class GameLogic {
 
 	// Purpose: Start Timer
 	private void StartTimer() {
-		this.Timer = new Thread();
+		// This function needs to be updated to use the timers properly. 
+		/*this.Timer = new Thread();
 		Timer.start();
 		try {
 			Thread.sleep(100000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		TimeUp();
+		}*/
+		// TimeUp();
 	}// done
 
 	// Purpose: to end the turn
@@ -158,8 +163,9 @@ public class GameLogic {
 	}// done
 
 	private void KillTimer() {
-		Timer.interrupt();
-	}// done
+		// NEEDS TO BE REWRITTEN
+		//Timer.interrupt();
+	}// 
 
 	// Purpose: player pick square if it is empty(act as a wrapper method)
 	public boolean PickSquare(int square) {
@@ -204,6 +210,9 @@ public class GameLogic {
 
 	// Purpose: give answer if parameter is boolean
 	// Changes: return type to boolean
+	// WE SHOULD MENTION THAT WE FORGOT THIS NODE IN THE ACTIVITY DIAGRAM, it goes before checkANSWER, 
+	// ALSO IN THE ACTIVTY DIAGRAM WE HAVE A CHECKANSWER() method that doesn't seem to exist in the class diagrams, 
+	// Rather that function exists only in the questionbank
 	private boolean AnswerQuestion(Boolean answer) {
 		String answerInString;
 		if (answer = true)
@@ -211,19 +220,25 @@ public class GameLogic {
 		else
 			answerInString = "disagree";
 		KillTimer();
-		if (CorrectAnswer == answerInString) {
+		return myQuestionBank.checkAnswer(answerInString);
+		/*if (CorrectAnswer == answer) {
 			return true;
 		} else
-			return false;
-
+			return false;*/
 	}// done
 
 	// Purpose: Get Question from question Bank
 	// Changes: return type to string
 	public String GetQuesiton() {
-		LinkedList QuestionString = myQuestionBank.getAquestion();
+		LinkedList<String> QuestionString = myQuestionBank.getAquestion();
 		String Question = (String) QuestionString.getFirst();
-		CorrectAnswer = (String) QuestionString.getLast();
+		String correctAnswerString = QuestionString.getLast();
+		if (correctAnswerString == "agree"){
+			CorrectAnswer = true;
+		}
+		else{
+			CorrectAnswer = false;
+		}
 		return Question;
 	}// done
 
@@ -243,8 +258,9 @@ public class GameLogic {
 	// wrapper method)
 	// Needs: In GUI, GUI.updateBoardView() doesn't have this method not sure
 	// how the general program overflow will implement this
+	// THIS FUNCTION WAS NEVER CLEARY SHOWED IN THE ACTIVITY DIAGRAM
 	private void UpdateBoardBasedOnAnswer() {
-		GUI.updateBoardView(); // update GUI board display
+		Display.updateBoardView(); // update GUI board display
 	}
 
 	// Purpose: check Winner of the line (will be called by RoundWoncheck)
