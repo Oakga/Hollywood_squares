@@ -10,6 +10,7 @@ public class QuestionBank {
 	
 	private int size;
 	private Hashtable<Integer, LinkedList> myHashTable;
+	private LinkedList current;
 	
 	//constructor
 	QuestionBank(String [] args){
@@ -99,7 +100,7 @@ public class QuestionBank {
 	//checks if an answer is right or wrong given by the celebrity
 	public boolean checkAnswer(String answer, LinkedList myLinkedList){
 		
-		return myLinkedList.contains(answer.toLowerCase());
+		return current.contains(answer.toLowerCase());
 			
 	}
 	
