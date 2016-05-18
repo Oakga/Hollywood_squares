@@ -293,7 +293,7 @@ public class GameLogic {
 		endTurn();
 	}
 
-	public void GetQuesiton() {
+	public String GetQuestion() {
 		LinkedList<String> QuestionString = myQuestionBank.getAquestion();
 		String Question = (String) QuestionString.getFirst();
 		String correctAnswerString = (String) QuestionString.getLast();
@@ -302,8 +302,7 @@ public class GameLogic {
 		} else {
 			CorrectAnswer = false;
 		}
-
-		ContinueTurn();
+		return Question;
 	}
 
 	private void SetSquare(int squarenum) {//changed
@@ -322,7 +321,7 @@ public class GameLogic {
 	}
 
 	private void UpdateBoardBasedOnAnswer() {
-		Display.changeToPlayerSelect(this);
+		System.out.println("update board base on answers");
 	}
 
 	private boolean checkWinner(int square1, int square2, int square3) {
