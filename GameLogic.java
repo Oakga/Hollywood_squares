@@ -46,8 +46,7 @@ public class GameLogic {
 	}
 
 	// Purpose: act as a wrapper class to start the game
-	//Changes make public
-	public void StartGame() {
+	private void StartGame() {
 		//set rounds back to zero and refresh scoreboard
 		currentRound = 1;
 		gameboard = new char[9];
@@ -133,7 +132,7 @@ public class GameLogic {
 		UpdateBoardBasedOnAnswer();
 		int winner = RoundWonCheck();
 		if(winner== -1){
-			switchplayers();
+			switchplayer(true);
 			PlayerTurnStart();
 		}
 		else{
@@ -169,6 +168,7 @@ public class GameLogic {
 	// Purpose: set numbers of player
 	public void setMultiplayer(boolean m) {
 		Multiplayer = m;
+		StartGame();
 	}
 
 	// Purpose: Update Round number
@@ -179,8 +179,12 @@ public class GameLogic {
 	// Purpose: Set up Secret Square location randomly
 	private void SecretSquareSetup() {
 		// THIS SHOULD ONLY BE ON SOME ROUNDS, THIS REQUIRES A CHECK
-		Random rand = new Random();
-		SecretSquare = rand.nextInt((8 - 0) + 1) + 0;
+		if(!PickedSecretSquare){
+			Random rand = new Random();
+			SecretSquare = rand.nextInt((8 - 0) + 1) + 0;
+		}
+		SecretSquare = -1;
+		
 	}// 
 
 	// Purpose: get current round
@@ -214,15 +218,18 @@ public class GameLogic {
 	}// done
 
 	// Purpose: switch current player value
-	// Changes: remove parameter
-	private void SwitchPlayer() {
+	private void SwitchPlayer(Boolean Player) {
+		//we ignore the parameter since we only ever switch the player to the other player, there is no second option
 		CurrentPlayer = !CurrentPlayer;
 	}// done
 
 	// Purpose: Start Timer
 	private void StartTimer() {
 		// This function needs to be updated to use the timers properly. 
-		TimerObject = new Timer;
+		TimerObject = new Timer();
+		//offically schedule is meant to take in a timertask, but it should hopeuflly work like this, otherwise there is a lamda way to do it i presume
+		TimerObject.schedule(TimeUp(),30*1000)// double check that this is 30 seconds
+
 		/*this.Timer = new Thread();
 		Timer.start();
 		try {
@@ -236,15 +243,20 @@ public class GameLogic {
 
 	// Purpose: to end the turn
 	private void TimeUp() {
-		int i;
+		// this was never used in the activity diagram and was not clear in the class diagram, but i assume it is
+		// meant to control what happens when the timer countdown is complete
+		AnswerQuestion(1); // answer the question saying the player disagrees
+/*		int i;
 		if(CurrentPlayer=true){i=1;}
 		else i=2;
-		endTurn(i);//end turn for player i
+		endTurn(i);//end turn for player i*/
 	}// done
 
 	private void KillTimer() {
 		// NEEDS TO BE REWRITTEN
 		//Timer.interrupt();
+		TimerObject.cancel();
+		TimerObject.purge();
 	}// 
 
 	// Purpose: player pick square if it is empty(act as a wrapper method)
@@ -331,6 +343,10 @@ public class GameLogic {
 			//CorrectAnswer = true;
 			returnVal = true;
 			SetSquare(getShape().charAt(0));
+			if(SecretSquare== currentSquare){
+				PickedSecretSquare == True;
+				PrizesGiven[0]="A new Car"
+			}
 			// now we need to set the square to the current players value
 		} else{
 			//CorrectAnswer = false;
@@ -351,10 +367,7 @@ public class GameLogic {
 	}// done
 
 	// Purpose: Get Question from question Bank
-	// Changes: return type to string
 	public void GetQuesiton() {
-		// celebrity answer
-		//Start timer
 		LinkedList<String> QuestionString = myQuestionBank.getAquestion();
 		String Question = (String) QuestionString.getFirst();
 		String correctAnswerString = (String) QuestionString.getLast();
@@ -365,7 +378,7 @@ public class GameLogic {
 			CorrectAnswer = false;
 		}
 		Display.ToQuestionFrame(Question); // this may requre other parameters as well
-		ContinueTurn();
+		ContinueTurn(); // starts timer
 	}// done
 
 	// Purpose: update the gameBoard square with the shape picked
@@ -382,18 +395,17 @@ public class GameLogic {
 
 	// Purpose: update GUI accordingly with the player picked choice (act as a
 	// wrapper method)
-	// Needs: In GUI, GUI.updateBoardView() doesn't have this method not sure
-	// how the general program overflow will implement this
-	// THIS FUNCTION WAS NEVER CLEARY SHOWED IN THE ACTIVITY DIAGRAM
+	// THIS FUNCTION WAS NEVER CLEARY SHOWED IN THE ACTIVITY DIAGRAM, but was in class diagram
 	private void UpdateBoardBasedOnAnswer() {
 		Display.changeToPlayerSelect(scoreboard); // update GUI board display really done via 
 	}
-
 	// Purpose: check Winner of the line (will be called by RoundWoncheck)
 	private int checkWinner() {
-		// it is unclear what this was really meant to do based of class diagram...
+		// it is unclear what this was really meant to do based of class diagram2 and the activty diagram. 
+		// the activity diagram uses it for something that is not its reponsibility... so we didn't end up using it really. 
+		// in some ways it seems to be the exact same thing as roundWonCheck, in other ways it seems to be the same as GameWonCheck so I just never used it
 		return 0;
-	}//
+	}
 
 	// Purpose: check who win the game return 1 if p1 wins, return 2 if p2 wins
 	// ,return 0 if nobody wins
