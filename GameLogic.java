@@ -26,12 +26,7 @@ public class GameLogic {
 		gameBoard = new char[9];
 		scoreBoard = new int[2];
 		SecretSquareSetup();
-		String args[] = new String[1];
-		args[0] = new String("QuestionDB.txt");
-		myQuestionBank = new QuestionBank("UserDB");
-		Display = new TicTacToeGui(this);
-		Display.setVisible(true);
-
+		myQuestionBank = new QuestionBank("QuestionDB");		
 	}
 
 
@@ -49,7 +44,8 @@ public class GameLogic {
 
 
 	public void PlayerTurnStart() {
-
+		
+		
 		if (!Multiplayer) {
 			Random rand = new Random();
 			int square = rand.nextInt(8);// select one of the 9 squares from
@@ -89,38 +85,26 @@ public class GameLogic {
 				break;
 			}
 		}
-		// a human player actually picks a square on the gui which should
-		// trigger
-		// get question and should also change the gui to be allow the user to
-		// select agree or disagre
+		Display.ToQuestionFrame();
 	}
 
-	// Purpose: gui call this method after player give answer
 	private void ContinueTurn() {
-		// StartTimer();
 		if (!Multiplayer) {
-			/*
-			 * throws InterruptedException { Thread.sleep(400); }
-			 */
 			Random rand = new Random();
 			int answer = rand.nextInt(1); // 0 is agree 1 is disagree
 			boolean response = true;
 			if (answer == 1)
 				response = false;
 			AnswerQuestion(response);
-			// the computer randomly selects agree or diagree.- that function
-			// will do checks and end turn
 		}
-		// A human will click a button, or the timer will run out
 	}
 
-	// Purpose: end turn of the current player (act as a wrapper method)
 	private void endTurn() {
 		UpdateBoardBasedOnAnswer();
 		int winner = RoundWonCheck();
 		if (winner == -1) {
 			SwitchPlayer(true);
-			PlayerTurnStart();
+			//PlayerTurnStart();
 		} else {
 			// winner = CurrentPlayer;
 			UpdateScoreBoard();// only you can win on your turn
@@ -274,7 +258,6 @@ public class GameLogic {
 	public void AnswerQuestion(Boolean answer) {
 
 		if (answer == CorrectAnswer) {
-			
 			SetSquare(currentSquare);
 			if(SecretSquare== currentSquare){
 				PrizesGiven[0]="A new Car";//test
@@ -283,6 +266,7 @@ public class GameLogic {
 			CurrentPlayer = !CurrentPlayer;
 			SetSquare(currentSquare);
 			if(RoundWonCheck()!=1 || RoundWonCheck()!=2){
+				Display.buttonsLeft[currentSquare].setEnabled(false);
 				if(SecretSquare== currentSquare){
 					PrizesGiven[0]="A new Car";//test
 				}
@@ -305,11 +289,11 @@ public class GameLogic {
 		return Question;
 	}
 
-	private void SetSquare(int squarenum) {//changed
+	private void SetSquare(int squarenum) {
 		if(CurrentPlayer==true) gameBoard[squarenum]='O';
 		else gameBoard[squarenum]='X';
 	}
-	private void resetSquare(int squarenum) {//changed
+	private void resetSquare(int squarenum) {
 		if(CurrentPlayer==true) gameBoard[squarenum]='n';
 		else gameBoard[squarenum]='n';
 	}
@@ -321,7 +305,7 @@ public class GameLogic {
 	}
 
 	private void UpdateBoardBasedOnAnswer() {
-		System.out.println("update board base on answers");
+		//Display.updateGameBoard(); //added GUI METHOD
 	}
 
 	private boolean checkWinner(int square1, int square2, int square3) {
