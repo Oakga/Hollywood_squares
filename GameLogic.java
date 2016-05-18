@@ -127,9 +127,10 @@ public class GameLogic {
 			turn = !turn;
 			SwitchPlayer(true);
 			PlayerTurnStart();
+			UpdateBoardBasedOnAnswer();
 		} else {
 			// winner = CurrentPlayer;
-			UpdateScoreBoard();// only you can win on your turn
+			UpdateScoreBoard();
 			turn = !turn;
 			int gameWinner = GameWonCheck();
 			if (gameWinner != -1) {
@@ -233,9 +234,9 @@ public class GameLogic {
 
 	private boolean CheckSquareEmpty(int square) {
 		if (gameBoard[square] == 'o' || gameBoard[square] == 'x')
-			return true;
-		else
 			return false;
+		else
+			return true;
 	}// no changes
 
 	// return 1 if player 1 win 'O'
@@ -281,7 +282,6 @@ public class GameLogic {
 	public void AnswerQuestion(Boolean answer) {
 
 		if (answer == CorrectAnswer) {
-			
 			SetSquare(currentSquare);
 			if(SecretSquare== currentSquare){
 				PrizesGiven[0]="A new Car";//test
@@ -315,12 +315,12 @@ public class GameLogic {
 
 	private void SetSquare(int squarenum) {//changed
 		if(CurrentPlayer==true){
-			Display.buttonsLeft[squarenum].setText("O");
-			gameBoard[squarenum]='O';
+			Display.buttonsLeft[squarenum].setText("X");
+			gameBoard[squarenum]='X';
 		}
 		else{
-			gameBoard[squarenum]='X';
-			Display.buttonsLeft[squarenum].setText("X");
+			gameBoard[squarenum]='O';
+			Display.buttonsLeft[squarenum].setText("O");
 		}
 	}
 	private void resetSquare(int squarenum) {//changed
@@ -341,7 +341,7 @@ public class GameLogic {
 	}
 
 	private void UpdateBoardBasedOnAnswer() {
-		//Display.changeToPlayerSelect(this);
+		Display.changeToGameMode();
 	}
 
 	private boolean checkWinner(int square1, int square2, int square3) {
