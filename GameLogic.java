@@ -67,12 +67,12 @@ public class GameLogic {
 	}
 
 	// Purpose: Start turn (act as a wrapper method)
-	private void PlayerTurnStart() {
-		Display.changeToPlayerSelect();
+	public void PlayerTurnStart() {
+		//Display.changeToPlayerSelect();
 		if(!Multiplayer){
-			throws InterruptedException {
+			/*throws InterruptedException {
 				Thread.sleep(400);
-			}
+			}*/
 			Random rand = new Random();
 			square = rand.nextInt(8);// select one of the 9 squares from 0->8
 			while(!CheckSquareEmpty(square)){
@@ -81,31 +81,31 @@ public class GameLogic {
 			}
 			switch(square){
 				case (0):
-					Display.topLeftButton === doClick();
+					Display.topLeftButton.doClick();
 					break;
 				case (1):
-					Display.topMiddleButton === doClick();
+					Display.topMiddleButton.doClick();
 					break;
 				case (2):
-					Display.topRightButton === doClick();
+					Display.topRightButton.doClick();
 					break;
 				case (3):
-					Display.middleLeftButton === doClick();
+					Display.middleLeftButton.doClick();
 					break;
 				case (4):
-					Display.middleRightButton === doClick();
+					Display.middleRightButton.doClick();
 					break;
 				case (5):
-					Display.middleMiddleButton === doClick();
+					Display.middleMiddleButton.doClick();
 					break;
 				case (6):
-					Display.bottomMiddleButton === doClick();
+					Display.bottomMiddleButton.doClick();
 					break;
 				case (7):
-					Display.bottomLeftButton === doClick();
+					Display.bottomLeftButton.doClick();
 					break;
 				case (8):
-					Display.bottomRightButton === doClick();
+					Display.bottomRightButton.doClick();
 					break;
 			}
 		}
@@ -134,6 +134,7 @@ public class GameLogic {
 		int winner = RoundWonCheck();
 		if(winner== -1){
 			switchplayers();
+			PlayerTurnStart();
 		}
 		else{
 			//winner = CurrentPlayer; 
@@ -148,7 +149,7 @@ public class GameLogic {
 		}
 		//check if there is a winner or board is full
 		// if a player won or it is full, check the round number and either display the final score or the round score
-		// otherwise switchplayers and startTurn 
+		// otherwise switchplayers(GUI must then start the turn )
 		//checkIfBoard is full
 
 		/*int playerWon=GameWonCheck();
@@ -385,7 +386,7 @@ public class GameLogic {
 	// how the general program overflow will implement this
 	// THIS FUNCTION WAS NEVER CLEARY SHOWED IN THE ACTIVITY DIAGRAM
 	private void UpdateBoardBasedOnAnswer() {
-		Display.updateBoardView(scoreboard); // update GUI board display
+		Display.changeToPlayerSelect(scoreboard); // update GUI board display really done via 
 	}
 
 	// Purpose: check Winner of the line (will be called by RoundWoncheck)
