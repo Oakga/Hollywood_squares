@@ -90,10 +90,6 @@ public class TicTacToeGui extends JFrame  {
 	private User loginAccount;
 	private String userName;
 	
-	public void changeTurn(GameLogic gl){
-		if(gl.turn==false)gl.turn=true;
-		if(gl.turn==true)gl.turn=false;
-	}
 	public TicTacToeGui(GameLogic gameLogic)
 	{	
 		gl= gameLogic;
