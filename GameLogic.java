@@ -1,6 +1,7 @@
 import java.util.LinkedList;
 import java.util.Random;
 import java.util.Timer;
+import java.util.TimerTask;
 
 public class GameLogic {
 	private int currentRound;
@@ -15,8 +16,8 @@ public class GameLogic {
 	private TicTacToeGui Display;
 	private boolean Multiplayer;
 	private Boolean CorrectAnswer;// Changed back to Boolean from string
-	private int roundsWonP1;
-	private int roundsWonP2;
+	private int roundsWonP1; // this is useless as we have the scoreboard
+	private int roundsWonP2; // this is useless as we have the scoreboard
 	private Timer TimerObject; // DOCUMENT CHANGE! -Flipped the order of the words since it is meant to be of type Timer
 	// JASON: I don't believe we need the next two variables and therefore we should try and remove them
 //	public Player player1;// new
@@ -47,6 +48,11 @@ public class GameLogic {
 	// Purpose: act as a wrapper class to start the game
 	//Changes make public
 	public void StartGame() {
+		//set rounds back to zero and refresh scoreboard
+		currentRound = 1;
+		gameboard = new char[9];
+		scoreBoard = new int[2];
+
 		StartRounds();
 		// login
 		// choose mutiplayer
@@ -56,6 +62,7 @@ public class GameLogic {
 	// Purpose: act as a wrapper class to start the round
 	private void StartRounds() {
 		UpdateGameboard();// initialize the gameboard
+		SecretSquareSetup();
 		PlayerTurnStart();
 	}
 
@@ -68,7 +75,7 @@ public class GameLogic {
 			}
 			Random rand = new Random();
 			square = rand.nextInt(8);// select one of the 9 squares from 0->8
-			while(!PickSquare(square)){
+			while(!CheckSquareEmpty(square)){
 				Random rand = new Random();
 				square = rand.nextInt(8);// select one of the 9 squares from 0->8
 			}
@@ -103,29 +110,59 @@ public class GameLogic {
 			}
 		}
 		//a human player actually picks a square on the gui which should trigger
-		// get question
+		// get question and should also change the gui to be allow the user to select agree or disagre
 	}
 
 	// Purpose: gui call this method after player give answer
-	private void ContinueTurn(String answer) {
-		//end timer
-		// player answer
-		// make consequences according to the answer
+	private void ContinueTurn() {
+		StartTimer();
+		if(!Multiplayer){
+			throws InterruptedException {
+				Thread.sleep(400);
+			}
+			Random rand = new Random();
+			answer = rand.nextInt(1); // 0 is agree 1 is disagree
+			AnswerQuestion(answer);
+			// the computer randomly selects agree or diagree.- that function will do checks and end turn
+		}
+		// A human will click a button, or the timer will run out
 	}
 
 	// Purpose: end turn of the current player (act as a wrapper method)
-	private void endTurn(int Rounds) {
-		int playerWon=GameWonCheck();
+	private void endTurn() {
+		UpdateBoardBasedOnAnswer();
+		int winner = RoundWonCheck();
+		if(winner== -1){
+			switchplayers();
+		}
+		else{
+			//winner = CurrentPlayer; 
+			UpdateScoreBoard()// only you can win on your turn
+			int gameWinner = GameWonCheck();
+			if(gameWinner!=-1){
+				Display.toroundoverframe(CurrentPlayer, scoreboard) //show round stats
+			}
+			else{
+				Display.togameoverframe(scoreboard) //show game stats
+			}
+		}
+		//check if there is a winner or board is full
+		// if a player won or it is full, check the round number and either display the final score or the round score
+		// otherwise switchplayers and startTurn 
+		//checkIfBoard is full
+
+		/*int playerWon=GameWonCheck();
 		UpdateScoreBoard(playerWon);
 		//update in the database
 		UpdateRounds();
-		if(Rounds>3){} //end game
+		if(Rounds>3){} //end game*/
 	}
 
 	// Purpose: to update the scoreBoard with whoever won
 	// Changes added a parameter
-	private void UpdateScoreBoard(int player) {
-		scoreBoard[player]++;
+	private void UpdateScoreBoard() {
+		scoreBoard[CurrentPlayer]++;
+		UpdateRounds();
 	}
 
 	// Purpose: set numbers of player
@@ -140,9 +177,10 @@ public class GameLogic {
 
 	// Purpose: Set up Secret Square location randomly
 	private void SecretSquareSetup() {
+		// THIS SHOULD ONLY BE ON SOME ROUNDS, THIS REQUIRES A CHECK
 		Random rand = new Random();
 		SecretSquare = rand.nextInt((8 - 0) + 1) + 0;
-	}// done
+	}// 
 
 	// Purpose: get current round
 	public int GetRoundNumber() {
@@ -151,11 +189,13 @@ public class GameLogic {
 
 	// Purpose: to get current player play item on board
 	// Changes: return type to char
-	public char getShape() {
+	public String getShape() {
+		String s = new String();
 		if (CurrentPlayer = true)
-			return 'O'; // player 1
+			s = 'O';
 		else
-			return 'X'; // player 2
+			s = 'X';
+		return s; // player 2
 	}// done
 
 	// Purpose: Get a prize from prize bank
@@ -181,6 +221,7 @@ public class GameLogic {
 	// Purpose: Start Timer
 	private void StartTimer() {
 		// This function needs to be updated to use the timers properly. 
+		TimerObject = new Timer;
 		/*this.Timer = new Thread();
 		Timer.start();
 		try {
@@ -210,8 +251,9 @@ public class GameLogic {
 		if (CheckSquareEmpty(square)) {
 			currentSquare = square;
 			return true;
-		} else
-			return false;
+		}
+		return false;
+		// if the return of this is true then the gui should call the getQuestion method, which will continue the turn as well
 	}// done
 
 	// Purpose: to check if the square is valid to pick
@@ -226,24 +268,41 @@ public class GameLogic {
 	// icon otherwise n
 	// Changes: change return type to char
 	// thoughts: might need to fill the entire board intially with 'n'
-	private char RoundWonCheck() {
+	// Jason: I believe this should be changed back to int
+	private int RoundWonCheck() {
+		String winnerSign = new String("n");
 		if (checkWinner(0, 1, 2))
-			return gameBoard[0];
-		if (checkWinner(3, 4, 5))
-			return gameBoard[3];
-		if (checkWinner(6, 7, 8))
-			return gameBoard[6];
-		if (checkWinner(0, 3, 6))
-			return gameBoard[0];
-		if (checkWinner(1, 4, 7))
-			return gameBoard[1];
-		if (checkWinner(2, 5, 8))
-			return gameBoard[2];
-		if (checkWinner(0, 4, 8))
-			return gameBoard[0];
-		if (checkWinner(2, 4, 6))
-			return gameBoard[2];
-		return 'n';
+			winnerSign = gameBoard[0];
+		else if (checkWinner(3, 4, 5))
+			winnerSign = gameBoard[3];
+		else if (checkWinner(6, 7, 8))
+			winnerSign = gameBoard[6];
+		else if (checkWinner(0, 3, 6))
+			winnerSign = gameBoard[0];
+		else if (checkWinner(1, 4, 7))
+			winnerSign = gameBoard[1];
+		else if (checkWinner(2, 5, 8))
+			winnerSign = gameBoard[2];
+		else if (checkWinner(0, 4, 8))
+			winnerSign = gameBoard[0];
+		else if (checkWinner(2, 4, 6))
+			winnerSign = gameBoard[2];
+
+		if (winnerSign == getShape()){
+			return CurrentPlayer;
+		}
+		else if(winnerSign != "n"){
+			return ((CurrentPlayer+1)%2);
+		}
+		else{
+			for(int i=0;i<9;i++){
+				if(CheckSquareEmpty(i)){
+					return -1;
+					break;
+			}
+			return 2; // there is a tie since all pieces are non empty
+		}
+		
 	}// done
 
 	// Purpose: give answer if parameter is boolean
@@ -251,26 +310,50 @@ public class GameLogic {
 	// WE SHOULD MENTION THAT WE FORGOT THIS NODE IN THE ACTIVITY DIAGRAM, it goes before checkANSWER, 
 	// ALSO IN THE ACTIVTY DIAGRAM WE HAVE A CHECKANSWER() method that doesn't seem to exist in the class diagrams, 
 	// Rather that function exists only in the questionbank
-	private boolean AnswerQuestion(Boolean answer) {
-		String answerInString;
+	public boolean AnswerQuestion(Boolean answer) {
+		KillTimer();
+		Boolean returnVal;
+		/*String answerInString;
 		if (answer = true)
 			answerInString = "agree";
 		else
-			answerInString = "disagree";
-		KillTimer();
-		return myQuestionBank.checkAnswer(answerInString);
-		/*if (CorrectAnswer == answer) {
-			return true;
-		} else
-			return false;*/
+			answerInString = "disagree";*/
+		
+		// THERE IS NO NEED TO CALL THE CHECK ANSWER OF QUESTIONBANK BECAUSE IT DOES NOT STORE THE ANSWER, SO THAT FUNCTION IS BASICALLY USELESS, 
+		// WE COULD USE THE FUNCTION TO FOLLOW DOCUMENTATION, BUT THAT MEANS THAT WE WILL NEED TO UNCONVER EVERYTHING WE DID WITH CORRECTANSWER, 
+		// SO THAT THE CHECK ANSWER FUNCTION CAN CONVERT IT BACK TO A BOOLEAN, WHICH WE MAY AS WELL JUST DO HERE. 
+		// return myQuestionBank.checkAnswer(answerInString);
+
+		// CORRECT ANSWWER IS BEING REPURPOSED TO STORE IF THE ANSWER THE USER CHOSE IS THE CORRECT ANSWER, AS OPPOSED TO PREVIOUSLY, 
+		// WHERE IT HELD WHAT THE CORRECT ANSWER WAS.
+		if (answer == CorrectAnswer) {
+			//CorrectAnswer = true;
+			returnVal = true;
+			SetSquare(getShape().charAt(0));
+			// now we need to set the square to the current players value
+		} else{
+			//CorrectAnswer = false;
+			returnVal = false;
+			char tempGameBoard[] = new char[9];
+			// switch the current player temporarily so the next functions work properly
+			CurrentPlayer = !CurrentPlayer;
+			SetSquare(getShape().charAt(0));
+			if(RoundWonCheck()==CurrentPlayer){
+				gameBoard = tempGameBoard;
+			}
+			CurrentPlayer = !CurrentPlayer;
+			// now we need to see if the opponent can get this position without winning
+		}
+		endTurn();
+		// WE don't actually care about the return value at all, since we need something to end the turn and that function is private we are calling it from here
+		return returnVal;
 	}// done
 
 	// Purpose: Get Question from question Bank
 	// Changes: return type to string
-	public String GetQuesiton() {
+	public void GetQuesiton() {
 		// celebrity answer
 		//Start timer
-		// return control to the gui for player to answer
 		LinkedList<String> QuestionString = myQuestionBank.getAquestion();
 		String Question = (String) QuestionString.getFirst();
 		String correctAnswerString = (String) QuestionString.getLast();
@@ -280,7 +363,8 @@ public class GameLogic {
 		else{
 			CorrectAnswer = false;
 		}
-		return Question;
+		Display.ToQuestionFrame(Question); // this may requre other parameters as well
+		ContinueTurn();
 	}// done
 
 	// Purpose: update the gameBoard square with the shape picked
@@ -301,30 +385,24 @@ public class GameLogic {
 	// how the general program overflow will implement this
 	// THIS FUNCTION WAS NEVER CLEARY SHOWED IN THE ACTIVITY DIAGRAM
 	private void UpdateBoardBasedOnAnswer() {
-		Display.updateBoardView(); // update GUI board display
+		Display.updateBoardView(scoreboard); // update GUI board display
 	}
 
 	// Purpose: check Winner of the line (will be called by RoundWoncheck)
-	// changes: changed return type and parameter
-	private boolean checkWinner(int square1, int square2, int square3) {
-		if (gameBoard[square1] == gameBoard[square2]) {
-			if (gameBoard[square2] == gameBoard[square3])
-				return true;
-			else
-				return false;
-		} else
-			return false;
-	}// done
+	private int checkWinner() {
+		// it is unclear what this was really meant to do based of class diagram...
+		return 0;
+	}//
 
 	// Purpose: check who win the game return 1 if p1 wins, return 2 if p2 wins
 	// ,return 0 if nobody wins
-	private int GameWonCheck() {
-		if (roundsWonP1 == 2) {
-			return 1;
-		} else if (roundsWonP2 == 2) {
-			return 2;
-		} else {
+	private int GameWonCheck(int u) {
+		if (scoreBoard[0] == 2) {
 			return 0;
+		} else if (scoreBoard[1] == 2) {
+			return 1;
+		} else {
+			return -1;
 		}
 	}// done
 
