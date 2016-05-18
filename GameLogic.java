@@ -32,12 +32,14 @@ public class GameLogic {
 	public GameLogic() {
 		currentRound = 1;
 		currentSquare = 1;
-		gameBoard = new char[8];
+		gameBoard = new char[9];
 		scoreBoard = new int[2];
 		SecretSquareSetup();
 		String args[] = new String[1];
 		args[0] = new String("QuestionDB.txt");
 		myQuestionBank = new QuestionBank(args);
+		Display = new TicTacToeGui(this);
+		Display.setVisible(true);
 		// Display = new TicTacToeGui();
 		// .setVisible(true);
 	}
@@ -45,8 +47,7 @@ public class GameLogic {
 	// Purpose: act as a wrapper class to start the game
 	//Changes make public
 	public void StartGame() {
-		Display = new TicTacToeGui(this);
-		Display.setVisible(true);
+		StartRounds();
 		// login
 		// choose mutiplayer
 		// start round
@@ -54,18 +55,55 @@ public class GameLogic {
 
 	// Purpose: act as a wrapper class to start the round
 	private void StartRounds() {
-		
 		UpdateGameboard();// initialize the gameboard
 		PlayerTurnStart();
 	}
 
 	// Purpose: Start turn (act as a wrapper method)
 	private void PlayerTurnStart() {
-		//player pick a square
+		Display.changeToPlayerSelect();
+		if(!Multiplayer){
+			throws InterruptedException {
+				Thread.sleep(400);
+			}
+			Random rand = new Random();
+			square = rand.nextInt(8);// select one of the 9 squares from 0->8
+			while(!PickSquare(square)){
+				Random rand = new Random();
+				square = rand.nextInt(8);// select one of the 9 squares from 0->8
+			}
+			switch(square){
+				case (0):
+					Display.topLeftButton === doClick();
+					break;
+				case (1):
+					Display.topMiddleButton === doClick();
+					break;
+				case (2):
+					Display.topRightButton === doClick();
+					break;
+				case (3):
+					Display.middleLeftButton === doClick();
+					break;
+				case (4):
+					Display.middleRightButton === doClick();
+					break;
+				case (5):
+					Display.middleMiddleButton === doClick();
+					break;
+				case (6):
+					Display.bottomMiddleButton === doClick();
+					break;
+				case (7):
+					Display.bottomLeftButton === doClick();
+					break;
+				case (8):
+					Display.bottomRightButton === doClick();
+					break;
+			}
+		}
+		//a human player actually picks a square on the gui which should trigger
 		// get question
-		// celebrity answer
-		//Start timer
-		// return control to the gui for player to answer
 	}
 
 	// Purpose: gui call this method after player give answer
@@ -230,9 +268,12 @@ public class GameLogic {
 	// Purpose: Get Question from question Bank
 	// Changes: return type to string
 	public String GetQuesiton() {
+		// celebrity answer
+		//Start timer
+		// return control to the gui for player to answer
 		LinkedList<String> QuestionString = myQuestionBank.getAquestion();
 		String Question = (String) QuestionString.getFirst();
-		String correctAnswerString = QuestionString.getLast();
+		String correctAnswerString = (String) QuestionString.getLast();
 		if (correctAnswerString == "agree"){
 			CorrectAnswer = true;
 		}

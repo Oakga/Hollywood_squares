@@ -78,7 +78,7 @@ public class TicTacToeGui extends JFrame  {
 	
 	
 	
- void changeToPlayerSelect(GameLogic gl)
+ 	public void changeToPlayerSelect(GameLogic gl)
 	{
 		JPanel playerSelectPanel = new JPanel();
 		playerSelectPanel.setLayout(null);
