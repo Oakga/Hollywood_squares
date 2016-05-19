@@ -49,7 +49,7 @@ public class GameLogic {
 	}
 
 
-	public void PlayerTurnStart() {
+	private void PlayerTurnStart() {
 		UpdateBoardBasedOnAnswer();
 		// Display.changeToGameMode(getShape());
 		if (!Multiplayer  && !CurrentPlayer) {
@@ -127,7 +127,7 @@ public class GameLogic {
 			// winner = CurrentPlayer;
 			UpdateScoreBoard();// only you can win on your turn
 			int gameWinner = GameWonCheck();
-			if (gameWinner != -1) {
+			if (gameWinner == -1) {
 				System.out.println("Round over");
 				Display.ToRoundOverFrame(CurrentPlayer, scoreBoard); //show
 				// round stats
