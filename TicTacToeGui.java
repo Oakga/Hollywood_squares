@@ -179,13 +179,19 @@ public class TicTacToeGui extends JFrame  {
 		    });
 	}
 
-	public void setButtons(char[] gm){
-		for(int i=0; i<9;i++){
-			if(gm[i]=='X'){
+	public void setButtons(char[] gameBoard)
+	{
+		for(int i=0; i<9;i++)
+		{
+			if(gameBoard[i]=='X'){
 				buttonsLeft[i].setText("X");
 			}
-			if(gm[i]=='O'){
+			else if(gameBoard[i]=='O'){
 				buttonsLeft[i].setText("O");
+			}
+			else if{
+				buttonsLeft[i].setText("");
+				buttonsLeft[i].setEnabled(true);
 			}
 		}
 	}
