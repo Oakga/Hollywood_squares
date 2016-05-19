@@ -320,51 +320,14 @@ public class GameLogic {
 	// return -1 if game is tie
 	// return 3 when there is an error and previous cases doesn't match
 	private int RoundWonCheck() {
-		char winnerSign = 'n';
-		int[] majorityCounter = new int[2];
-		for (int i = 0; i < 9; i++) {
-			if (gameBoard[i]=='x'){
-				majorityCounter[0]+=1;
+		if(checkWinner()==true)
+		{
+			if(CurrentPlayer==true){
+				return 2;
 			}
-			else if(gameBoard[i]=='0'){
-				majorityCounter[1]+=1;
-			}
+			else return 1;
 		}
-		if(majorityCounter[0]>=5){
-			winnerSign='x';
-		}
-		else if(majorityCounter[1]>=5){
-			winnerSign='o';
-		}
-		else if (checkWinner(0, 1, 2))
-			winnerSign = gameBoard[0];
-		else if (checkWinner(3, 4, 5))
-			winnerSign = gameBoard[3];
-		else if (checkWinner(6, 7, 8))
-			winnerSign = gameBoard[6];
-		else if (checkWinner(0, 3, 6))
-			winnerSign = gameBoard[0];
-		else if (checkWinner(1, 4, 7))
-			winnerSign = gameBoard[1];
-		else if (checkWinner(2, 5, 8))
-			winnerSign = gameBoard[2];
-		else if (checkWinner(0, 4, 8))
-			winnerSign = gameBoard[0];
-		else if (checkWinner(2, 4, 6))
-			winnerSign = gameBoard[2];
-		if (winnerSign == 'O') {
-			return 1;
-		} else if (winnerSign == 'X') {
-			return 2; 
-		} else {
-			for (int i = 0; i < 9; i++) {
-				if (CheckSquareEmpty(i)) {
-					return 0;
-				}
-				return -1;
-			}
-		}
-		return 3;
+		return 0;
 	}
 
 	// Purpose: give answer if parameter is boolean
@@ -505,15 +468,98 @@ public class GameLogic {
 		// in some ways it seems to be the exact same thing as roundWonCheck, in other ways it seems to be the same as GameWonCheck so I just never used it
 		return 0;
 	}*/
-	private boolean checkWinner(int square1, int square2, int square3) {
-		if (gameBoard[square1] == gameBoard[square2]) {
-			if (gameBoard[square2] == gameBoard[square3])
-				return true;
-			else
-				return false;
-		} else
+	private boolean checkWinner() {
+			char[][] positions = new char[3][3];
+			int x=0;
+			for(int i=0;i<3;i++){
+				for(int j=0;j<3;j++){
+					positions[i][j]=gameBoard[x];
+					x++;
+				}
+			}
+			// this checks if you have 5 pieces on the board
+			int gameoverx=0;
+			int gameovero=0;
+			for(int i=0;i<9;i++)
+			{
+				if(gameBoard[i]=='X'){
+					gameoverx++;
+				}
+				if(gameBoard[i]=='O'){
+					gameovero++;
+				}
+			}
+			if(gameovero>=5 || gameoverx>=5)return true;
+			
+			// this does the rows
+			for(int i=0;i<3;i++){
+				gameoverx=0;
+				gameovero=0;
+				for(int j=0;j<3;j++){
+					if(positions[i][j]=='X')gameoverx++;
+					if(positions[i][j]=='O')gameovero++;
+					if(gameoverx==3){
+						return true;	 
+					}
+					if(gameovero==3){
+						return true;			
+					}
+				}
+			}
+			//this does the columns 
+			for(int i=0;i<3;i++){
+				gameoverx=0;
+				gameovero=0;
+				for(int j=0;j<3;j++)
+				{
+					if(positions[j][i]=='X')gameoverx++;
+					if(positions[j][i]=='O')gameovero++;
+					if(gameoverx==3)
+					{
+						return true;			
+					}
+					if(gameovero==3)
+					{
+						return true;			
+					}
+				}
+			}
+			// this does the top left to bottom right diagonal1 test  
+			gameoverx=0;
+			gameovero=0;
+			for(int i=0;i<3;i++)
+			{
+				if(positions[i][i]=='X')gameoverx++;
+				if(positions[i][i]=='O')gameovero++;
+				if(gameoverx==3)
+				{
+					return true;	
+				}							
+				if(gameovero==3)
+				{
+					return true;		
+				}
+			}
+						// this is the diagonal test for the top right to bottom left 
+			gameoverx=0;
+			gameovero=0;
+			for(int i=2;i>-1;i--)
+			{
+				
+				if(positions[2-i][i]=='X')gameoverx++;
+				if(positions[2-i][i]=='O')gameovero++;
+				if(gameoverx==3)
+				{
+					return true;			
+				}
+				if(gameovero==3)
+				{
+					return true;			
+				}
+			}
+
 			return false;
-	}// done
+	}
 
 	private void UpdateBoardBasedOnAnswer() {
 		Display.setButtons(gameBoard);

@@ -212,8 +212,8 @@ public class TicTacToeGui extends JFrame  {
 		}
 		    
 		// this should be changeable to whatever player went last, so well need to keep track of that at some point
-		 turnMessage = new JLabel("Player "+ player +" please go");
-		 turnMessage.setBounds(5, 5, 424, 14);
+		turnMessage = new JLabel("Player "+ player +" please go");
+		turnMessage.setBounds(5, 5, 424, 14);
 		gameModePanel.add(turnMessage);
 		gameModePanel.add(panel);
 		masterPane.add(gameModePanel);
@@ -279,10 +279,24 @@ public class TicTacToeGui extends JFrame  {
 		questionPanel.add(questionPlace, BorderLayout.CENTER);
 		
 		disagreeButton.addActionListener(e ->{
-			gl.AnswerQuestion(false);
+			boolean returnValue = true;
+			returnValue=gl.AnswerQuestion(false);
+			if(returnValue==true){
+				JOptionPane.showMessageDialog(null,"that was corret");
+			}
+			if(returnValue==false){
+				JOptionPane.showMessageDialog(null,"that was incorrent");
+			}
 		});
 		agreeButton.addActionListener(e ->{
-			gl.AnswerQuestion(true);
+			boolean returnValue = true;
+			returnValue=gl.AnswerQuestion(true);
+			if(returnValue==true){
+				JOptionPane.showMessageDialog(null,"that was corret");
+			}
+			if(returnValue==false){
+				JOptionPane.showMessageDialog(null,"that was incorrent");
+			}
 		});
 		masterPane.add(questionPanel);
 		mainFrame.addLayoutComponent(questionPanel, "questionPanel");
@@ -295,9 +309,22 @@ public class TicTacToeGui extends JFrame  {
 		roundOverPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		roundOverPanel.setLayout(null);
 		winner =' ';
-		if(currentPlayer==true)winner='1';
-		if(currentPlayer==false)winner='2';
-		// need to check the gl to see what message to print out and what kind of frame this is going to be
+		if(currentPlayer==true){
+			winner='1';
+			try{loginAccount = new User("UserDB.txt");}
+			catch(Exception e){e.printStackTrace();}
+			loginAccount.updateScore(1);
+			try{loginAccount.updateDB();}
+			catch(Exception e){e.printStackTrace();}
+		}
+		if(currentPlayer==false){
+			try{loginAccount = new User("UserDB.txt");}
+			catch(Exception e){e.printStackTrace();}
+			loginAccount.updateScore(2);
+			try{loginAccount.updateDB();}
+			catch(Exception e){e.printStackTrace();}
+			winner='2';
+		}
 		JLabel lblNewLabel = new JLabel("player "+winner+" has won "+"\n"+"the score is "+scoreBoard[0]+" to "+scoreBoard[1]);
 		lblNewLabel.setBounds(10, 24, 414, 35);
 		roundOverPanel.add(lblNewLabel);
