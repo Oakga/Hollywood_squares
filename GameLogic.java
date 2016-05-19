@@ -35,13 +35,13 @@ public class GameLogic {
 		Display.setVisible(true);
 	}
 
-
-	public void StartGame() {
+	private void StartGame() {
 		currentRound = 1;
 		gameBoard = new char[9];
 		scoreBoard = new int[2];
 		StartRounds();
 	}
+
 	private void StartRounds() {
 		UpdateGameboard();// initialize the gameboard
 		SecretSquareSetup();
@@ -285,18 +285,18 @@ public class GameLogic {
 		char winnerSign = 0;
 		int[] majorityCounter = new int[2];
 		for (int i = 0; i < 9; i++) {
-			if (gameBoard[i]=='x'{
-				majorityCounter[0];
+			if (gameBoard[i]=='x'){
+				majorityCounter[0]+=1;
 			}
-			else if(gameBoard[i]=='0'{
-				majorityCounter[1];
+			else if(gameBoard[i]=='0'){
+				majorityCounter[1]+=1;
 			}
 		}
 		if(majorityCounter[0]>=5){
-			winnerSign=='x';
+			winnerSign='x';
 		}
 		else if(majorityCounter[1]>=5){
-			winnerSign=='o';
+			winnerSign='o';
 		}
 		else if (checkWinner(0, 1, 2))
 			winnerSign = gameBoard[0];
@@ -375,6 +375,7 @@ public class GameLogic {
 				currentPlayerint = 1;
 			}
 			if(RoundWonCheck()==currentPlayerint){
+
 				gameBoard = tempGameBoard;
 			}
 			CurrentPlayer = !CurrentPlayer;
