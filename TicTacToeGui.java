@@ -429,9 +429,9 @@ public class TicTacToeGui extends JFrame  {
 		playAgainButton.setBounds(303, 172, 121, 79);
 		PGOCSM_Panel.add(playAgainButton);
 		
-        char winner='';
-        if(int[0]==2)winner='1';
-        if(int[1]==2)winner='2';
+        char winner=' ';
+        if(scoreBoard[0]==2)winner='1';
+        if(scoreBoard[1]==2)winner='2';
 
 		JLabel lblNewLabel = new JLabel("player "+winner+" won the game!");
 		lblNewLabel.setBounds(134, 22, 184, 79);
