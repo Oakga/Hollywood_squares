@@ -50,7 +50,8 @@ public class GameLogic {
 
 
 	public void PlayerTurnStart() {
-		Display.changeToGameMode();
+		UpdateBoardBasedOnAnswer();
+		// Display.changeToGameMode(getShape());
 		if (!Multiplayer  && !CurrentPlayer) {
 			Random rand = new Random();
 			int square = rand.nextInt(8);// select one of the 9 squares from
@@ -117,7 +118,6 @@ public class GameLogic {
 
 	// Purpose: end turn of the current player (act as a wrapper method)
 	private void endTurn() {
-		UpdateBoardBasedOnAnswer();
 		int winner = RoundWonCheck();
 		// System.out.println(winner)
 		if (winner == 0) {
@@ -129,11 +129,11 @@ public class GameLogic {
 			int gameWinner = GameWonCheck();
 			if (gameWinner != -1) {
 				System.out.println("Round over");
-				// Display.ToRoundOverFrame(CurrentPlayer, scoreBoard); //show
+				Display.ToRoundOverFrame(CurrentPlayer, scoreBoard); //show
 				// round stats
 			} else {
 				System.out.println("Game over");
-				// Display.togameoverframe(scoreBoard); //show game stats
+				Display.changeToPlayGameorCheckScoreMode(scoreBoard); //show game stats
 			}
 		}
 		// check if there is a winner or board is full
@@ -459,7 +459,7 @@ public class GameLogic {
 
 	private void UpdateBoardBasedOnAnswer() {
 		Display.setButtons(gameBoard);
-		Display.changeToGameMode();
+		Display.changeToGameMode(getShape());
 
 	}
 
