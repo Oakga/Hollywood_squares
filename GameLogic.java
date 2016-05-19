@@ -38,7 +38,7 @@ public class GameLogic {
 
 	public void StartGame() {
 		currentRound = 1;
-		// gameboard = new char[9];
+		gameBoard = new char[9];
 		scoreBoard = new int[2];
 		StartRounds();
 	}
@@ -283,7 +283,22 @@ public class GameLogic {
 	// return 3 when there is an error and previous cases doesn't match
 	private int RoundWonCheck() {
 		char winnerSign = 0;
-		if (checkWinner(0, 1, 2))
+		int[] majorityCounter = new int[2];
+		for (int i = 0; i < 9; i++) {
+			if (gameBoard[i]=='x'{
+				majorityCounter[0];
+			}
+			else if(gameBoard[i]=='0'{
+				majorityCounter[1];
+			}
+		}
+		if(majorityCounter[0]>=5){
+			winnerSign=='x';
+		}
+		else if(majorityCounter[1]>=5){
+			winnerSign=='o';
+		}
+		else if (checkWinner(0, 1, 2))
 			winnerSign = gameBoard[0];
 		else if (checkWinner(3, 4, 5))
 			winnerSign = gameBoard[3];
