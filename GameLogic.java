@@ -15,20 +15,12 @@ public class GameLogic {
 	private QuestionBank myQuestionBank;
 	private TicTacToeGui Display;
 	private boolean Multiplayer;
-	private Boolean CorrectAnswer;// Changed back to Boolean from string
-	private int roundsWonP1; // this is useless as we have the scoreboard
-	private int roundsWonP2; // this is useless as we have the scoreboard
-	private Timer TimerObject; // DOCUMENT CHANGE! -Flipped the order of the words since it is meant to be of type Timer
-	// JASON: I don't believe we need the next two variables and therefore we should try and remove them
-//	public Player player1;// new
-//	public Player player2;// new
-	// private User myUserClass=new User(args[1]);
-	// A>dont know if i can add args[1] here, if yes we can leave it, if no need
-	// to
-	// document User(string in) changes to User() and i will hardcode the text
-	// file into the code and document that, regardless
-	// need to document we never made new variable of user class in gamelogic
-	// class- Tyler
+
+	private Boolean CorrectAnswer;
+	private int roundsWonP1;
+	private int roundsWonP2;
+	private Timer TimerObject;
+	public boolean turn =true;
 
 	public GameLogic() {
 		currentRound = 1;
@@ -41,44 +33,34 @@ public class GameLogic {
 		myQuestionBank = new QuestionBank(args);
 		Display = new TicTacToeGui(this);
 		Display.setVisible(true);
-		// Display = new TicTacToeGui();
-		// .setVisible(true);
 	}
 
-	// Purpose: act as a wrapper class to start the game
-	private void StartGame() {
-		//set rounds back to zero and refresh scoreboard
+
+	void StartGame() {
 		currentRound = 1;
 		gameboard = new char[9];
 		scoreBoard = new int[2];
-
 		StartRounds();
-		// login
-		// choose mutiplayer
-		// start round
 	}
-
-	// Purpose: act as a wrapper class to start the round
 	private void StartRounds() {
 		UpdateGameboard();// initialize the gameboard
 		SecretSquareSetup();
 		PlayerTurnStart();
 	}
 
-	// Purpose: Start turn (act as a wrapper method)
+
 	public void PlayerTurnStart() {
-		//Display.changeToPlayerSelect();
-		if(!Multiplayer){
-			/*throws InterruptedException {
-				Thread.sleep(400);
-			}*/
+		
+		if (!Multiplayer  && !CurrentPlayer) {
 			Random rand = new Random();
-			square = rand.nextInt(8);// select one of the 9 squares from 0->8
-			while(!CheckSquareEmpty(square)){
-				Random rand = new Random();
-				square = rand.nextInt(8);// select one of the 9 squares from 0->8
+			int square = rand.nextInt(8);// select one of the 9 squares from
+											// 0->8
+			while (!CheckSquareEmpty(square)) {
+				System.out.println("syck");
+				Random rand1 = new Random();
+				square = rand1.nextInt(8);// select one of the 9 squares from // 0->8				
 			}
-			switch(square){
+			switch (square) {
 				case (0):
 					Display.topLeftButton.doClick();
 					break;
@@ -107,61 +89,73 @@ public class GameLogic {
 					Display.bottomRightButton.doClick();
 					break;
 			}
-		}
-		//a human player actually picks a square on the gui which should trigger
-		// get question and should also change the gui to be allow the user to select agree or disagre
+       }
+		// a human player actually picks a square on the gui which should
+		// trigger
+		// get question and should also change the gui to be allow the user to
+		// select agree or disagre
 	}
 
 	// Purpose: gui call this method after player give answer
 	private void ContinueTurn() {
-		StartTimer();
-		if(!Multiplayer){
-			throws InterruptedException {
-				Thread.sleep(400);
-			}
+		// StartTimer();
+		if (!Multiplayer && !CurrentPlayer) {
+			/*
+			 * throws InterruptedException { Thread.sleep(400); }
+			 */
 			Random rand = new Random();
-			answer = rand.nextInt(1); // 0 is agree 1 is disagree
-			AnswerQuestion(answer);
-			// the computer randomly selects agree or diagree.- that function will do checks and end turn
-		}
+			int answer = rand.nextInt(1); // 0 is agree 1 is disagree
+			boolean response = true;
+			if (answer == 1)
+				response = false;
+			AnswerQuestion(response);
+			// the computer randomly selects agree or diagree.- that function
+			// will do checks and end turn
 		// A human will click a button, or the timer will run out
+		}
 	}
 
 	// Purpose: end turn of the current player (act as a wrapper method)
 	private void endTurn() {
-		UpdateBoardBasedOnAnswer();
+		//UpdateBoardBasedOnAnswer();
 		int winner = RoundWonCheck();
-		if(winner== -1){
-			switchplayer(true);
+		if (winner == -1) {
+			turn = !turn;
+			SwitchPlayer(true);
 			PlayerTurnStart();
-		}
-		else{
-			//winner = CurrentPlayer; 
-			UpdateScoreBoard()// only you can win on your turn
+		} else {
+			// winner = CurrentPlayer;
+			UpdateScoreBoard();// only you can win on your turn
+			turn = !turn;
 			int gameWinner = GameWonCheck();
-			if(gameWinner!=-1){
-				Display.toroundoverframe(CurrentPlayer, scoreboard) //show round stats
-			}
-			else{
-				Display.togameoverframe(scoreboard) //show game stats
+			if (gameWinner != -1) {
+				System.out.println("Round over");
+				// Display.ToRoundOverFrame(CurrentPlayer, scoreBoard); //show
+				// round stats
+			} else {
+				System.out.println("Game over");
+				// Display.togameoverframe(scoreBoard); //show game stats
 			}
 		}
-		//check if there is a winner or board is full
-		// if a player won or it is full, check the round number and either display the final score or the round score
+		// check if there is a winner or board is full
+		// if a player won or it is full, check the round number and either
+		// display the final score or the round score
 		// otherwise switchplayers(GUI must then start the turn )
-		//checkIfBoard is full
+		// checkIfBoard is full
 
-		/*int playerWon=GameWonCheck();
-		UpdateScoreBoard(playerWon);
-		//update in the database
-		UpdateRounds();
-		if(Rounds>3){} //end game*/
+		/*
+		 * int playerWon=GameWonCheck(); UpdateScoreBoard(playerWon); //update
+		 * in the database UpdateRounds(); if(Rounds>3){} //end game
+		 */
 	}
 
 	// Purpose: to update the scoreBoard with whoever won
 	// Changes added a parameter
 	private void UpdateScoreBoard() {
-		scoreBoard[CurrentPlayer]++;
+		int player = 0;
+		if (CurrentPlayer == false)
+			player = 1;
+		scoreBoard[player]++;
 		UpdateRounds();
 	}
 
@@ -179,13 +173,13 @@ public class GameLogic {
 	// Purpose: Set up Secret Square location randomly
 	private void SecretSquareSetup() {
 		// THIS SHOULD ONLY BE ON SOME ROUNDS, THIS REQUIRES A CHECK
-		if(!PickedSecretSquare){
+		if (!PickedSecretSquare) {
 			Random rand = new Random();
 			SecretSquare = rand.nextInt((8 - 0) + 1) + 0;
 		}
 		SecretSquare = -1;
-		
-	}// 
+
+	}//
 
 	// Purpose: get current round
 	public int GetRoundNumber() {
@@ -194,8 +188,8 @@ public class GameLogic {
 
 	// Purpose: to get current player play item on board
 	// Changes: return type to char
-	public String getShape() {
-		String s = new String();
+	public char getShape() {
+		char s;
 		if (CurrentPlayer = true)
 			s = 'O';
 		else
@@ -217,12 +211,17 @@ public class GameLogic {
 		return Prize;
 	}// done
 
-	// Purpose: switch current player value
 	private void SwitchPlayer(Boolean Player) {
-		//we ignore the parameter since we only ever switch the player to the other player, there is no second option
 		CurrentPlayer = !CurrentPlayer;
-	}// done
-
+	}
+	
+	public boolean PickSquare(int square) {
+		if (CheckSquareEmpty(square)) {
+			currentSquare = square;
+			return true;
+		}
+		return false;
+	}
 	// Purpose: Start Timer
 	private void StartTimer() {
 		// This function needs to be updated to use the timers properly. 
@@ -259,31 +258,20 @@ public class GameLogic {
 		TimerObject.purge();
 	}// 
 
-	// Purpose: player pick square if it is empty(act as a wrapper method)
-	public boolean PickSquare(int square) {
-		if (CheckSquareEmpty(square)) {
-			currentSquare = square;
-			return true;
-		}
-		return false;
-		// if the return of this is true then the gui should call the getQuestion method, which will continue the turn as well
-	}// done
-
-	// Purpose: to check if the square is valid to pick
 	private boolean CheckSquareEmpty(int square) {
 		if (gameBoard[square] == 'o' || gameBoard[square] == 'x')
-			return true;
-		else
 			return false;
-	}// done
+		else
+			return true;	
+	}// no changes
 
-	// Purpose: to check the gameBoard if the round is over:return winner player
-	// icon otherwise n
-	// Changes: change return type to char
-	// thoughts: might need to fill the entire board intially with 'n'
-	// Jason: I believe this should be changed back to int
+	// return 1 if player 1 win 'O'
+	// return 2 if player 2 win 'X'
+	// return 0 if game is not done yet
+	// return -1 if game is tie
+	// return 3 when there is an error and previous cases doesn't match
 	private int RoundWonCheck() {
-		String winnerSign = new String("n");
+		char winnerSign = 0;
 		if (checkWinner(0, 1, 2))
 			winnerSign = gameBoard[0];
 		else if (checkWinner(3, 4, 5))
@@ -317,6 +305,21 @@ public class GameLogic {
 		}
 		
 	}// done
+
+/*		if (winnerSign == 'O') {
+			return 1;
+		} else if (winnerSign == 'X') {
+			return 2; 
+		} else {
+			for (int i = 0; i < 9; i++) {
+				if (CheckSquareEmpty(i)) {
+					return 0;
+				}
+				return -1;
+			}
+		}
+		return 3;
+	}*/
 
 	// Purpose: give answer if parameter is boolean
 	// Changes: return type to boolean
@@ -366,39 +369,73 @@ public class GameLogic {
 		return returnVal;
 	}// done
 
-	// Purpose: Get Question from question Bank
+	/*// Purpose: Get Question from question Bank
+=======
+
+
+
+	public void AnswerQuestion(Boolean answer) {
+
+		if (answer == CorrectAnswer) {
+			
+			SetSquare(currentSquare);
+			if(SecretSquare== currentSquare){
+				PrizesGiven[0]="A new Car";//test
+			}
+		} else{
+			CurrentPlayer = !CurrentPlayer;
+			SetSquare(currentSquare);
+			if(RoundWonCheck()!=1 || RoundWonCheck()!=2){
+				if(SecretSquare== currentSquare){
+					PrizesGiven[0]="A new Car";//test
+				}
+			}
+			resetSquare(currentSquare);
+			CurrentPlayer = !CurrentPlayer;
+		}
+		endTurn();
+	}*/
+
 	public void GetQuesiton() {
 		LinkedList<String> QuestionString = myQuestionBank.getAquestion();
 		String Question = (String) QuestionString.getFirst();
 		String correctAnswerString = (String) QuestionString.getLast();
-		if (correctAnswerString == "agree"){
+		if (correctAnswerString == "agree") {
 			CorrectAnswer = true;
-		}
-		else{
+		} else {
 			CorrectAnswer = false;
 		}
-		Display.ToQuestionFrame(Question); // this may requre other parameters as well
-		ContinueTurn(); // starts timer
-	}// done
+		Display.ToQuestionFrame(Question);
+		ContinueTurn();
+	}
 
-	// Purpose: update the gameBoard square with the shape picked
-	private void SetSquare(char shape) {
-		gameBoard[currentSquare] = shape;
-	}// done
+	private void SetSquare(int squarenum) {//changed
+		if(CurrentPlayer==true){
+			Display.buttonsLeft[squarenum].setText("O");
+			gameBoard[squarenum]='O';
+		}
+		else{
+			gameBoard[squarenum]='X';
+			Display.buttonsLeft[squarenum].setText("X");
+		}
+	}
+	private void resetSquare(int squarenum) {//changed
+		if(CurrentPlayer==true){
+			Display.buttonsLeft[squarenum].setEnabled(true);
+			gameBoard[squarenum]='n';
+		}
+		else{
+			Display.buttonsLeft[squarenum].setEnabled(true);
+			gameBoard[squarenum]='n';
+		}
+	}
 
-	// Purpose:fill the entire board with n in the beginning
 	private void UpdateGameboard() {
 		for (int i = 0; i < 9; i++) {
 			gameBoard[i] = 'n';
 		}
-	}// done
-
-	// Purpose: update GUI accordingly with the player picked choice (act as a
-	// wrapper method)
-	// THIS FUNCTION WAS NEVER CLEARY SHOWED IN THE ACTIVITY DIAGRAM, but was in class diagram
-	private void UpdateBoardBasedOnAnswer() {
-		Display.changeToPlayerSelect(scoreboard); // update GUI board display really done via 
 	}
+
 	// Purpose: check Winner of the line (will be called by RoundWoncheck)
 	private int checkWinner() {
 		// it is unclear what this was really meant to do based of class diagram2 and the activty diagram. 
@@ -407,9 +444,11 @@ public class GameLogic {
 		return 0;
 	}
 
-	// Purpose: check who win the game return 1 if p1 wins, return 2 if p2 wins
-	// ,return 0 if nobody wins
-	private int GameWonCheck(int u) {
+	private void UpdateBoardBasedOnAnswer() {
+		//Display.changeToPlayerSelect(this);
+	}
+
+	private int GameWonCheck() {
 		if (scoreBoard[0] == 2) {
 			return 0;
 		} else if (scoreBoard[1] == 2) {
@@ -417,7 +456,7 @@ public class GameLogic {
 		} else {
 			return -1;
 		}
-	}// done
+	}
 
 }
 

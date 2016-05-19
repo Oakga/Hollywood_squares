@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
 import java.util.concurrent.Semaphore;
 
 import javax.swing.JButton;
@@ -14,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
@@ -52,65 +54,88 @@ import javax.swing.border.EmptyBorder;
  */
 @SuppressWarnings("serial")
 public class TicTacToeGui extends JFrame  {
-	private CardLayout mainFrame;
+	
 	private JLabel gamesWon;
 	private JLabel gamesPlayed;
 	private JLabel turnMessage;
-	private JLabel timerMessage;
-	private JLabel questionMessage;
 	private JButton exitButton;
-	private JButton topLeftButton;
-	private JButton topMiddleButton;
-	private JButton topRightButton;
-	private JButton middleLeftButton;
-	private JButton middleRightButton;
-	private JButton middleMiddleButton;
-	private JButton bottomMiddleButton;
-	private JButton bottomLeftButton;
-	private JButton bottomRightButton;
+	private JTextField loginTextField;
+	/*
+	 * all the buttons had to be changed to public, add to the documentation 
+	 */
+	JButton topLeftButton;
+	JButton topMiddleButton;
+	JButton topRightButton;
+    JButton middleLeftButton;
+	JButton middleRightButton;
+	JButton middleMiddleButton;
+	JButton bottomMiddleButton;
+	JButton bottomLeftButton;
+	JButton bottomRightButton;
 	private JButton agreeButton;
 	private JButton disagreeButton;
 	private JButton PVPButton;
 	private JButton PVEButton;
-	private JTextField loginTextField;
+	private JLabel timerMessage;
+	private JLabel questionMessage;
+	private JButton checkScoreButton;
+	
+	/*
+	 * these five items are extra, we will need too add them to the documentation 
+	 */
+	private GameLogic gl;
 	private JPanel masterPane;
 	public JButton[] buttonsLeft = new JButton[9];
+	private CardLayout mainFrame;
+	private User loginAccount;
+	private String userName;
 	
-	
-	
- 	public void changeToPlayerSelect(GameLogic gl)
-	{
-		JPanel playerSelectPanel = new JPanel();
-		playerSelectPanel.setLayout(null);
-		
-		 PVPButton = new JButton("Single Player");
-		 PVPButton.addActionListener(e ->{
-			
-			changeToGameMode(gl,playerSelectPanel);
-		});
-		 PVPButton.setBounds(10, 101, 121, 53);
-		playerSelectPanel.add(PVPButton);
-		
-		 PVEButton = new JButton("Two Players");
-		 PVEButton.setBounds(313, 101, 121, 53);
-		 PVEButton.addActionListener(e ->{
-			changeToGameMode(gl,playerSelectPanel);
-		});
-		playerSelectPanel.add(PVEButton);
-		
-		JLabel lblNewLabel = new JLabel("Choose what game mode you want");
-		lblNewLabel.setBounds(134, 22, 250, 79);
-		playerSelectPanel.add(lblNewLabel);
-		masterPane.add(playerSelectPanel);
-		mainFrame.addLayoutComponent(playerSelectPanel, "playerSelectPanel");
-		mainFrame.show(masterPane, "playerSelectPanel");
+
+	public void changeTurn(GameLogic gl){
+		if(gl.turn==false)gl.turn=true;
+		if(gl.turn==true)gl.turn=false;
+	}
+	public TicTacToeGui(GameLogic gameLogic)
+	{	
+		gl= gameLogic;
+		try {
+			loginAccount = new User("UserDB.txt");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		mainFrame= new CardLayout(0,0);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 471, 336);
+	    masterPane = new JPanel();
+		masterPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		masterPane.setLayout(mainFrame);
+		setContentPane(masterPane);
+		topLeftButton = new JButton("");
+		topMiddleButton= new JButton("");
+		topRightButton= new JButton("");
+		middleLeftButton= new JButton("");
+		middleRightButton= new JButton("");
+		middleMiddleButton= new JButton("");
+		bottomMiddleButton= new JButton("");
+		bottomLeftButton= new JButton("");
+		bottomRightButton= new JButton("");
+		buttonsLeft[0] = topLeftButton;
+		buttonsLeft[1] = topMiddleButton;
+		buttonsLeft[2] = topRightButton;
+		buttonsLeft[3] = middleLeftButton;
+		buttonsLeft[4] = middleRightButton;
+		buttonsLeft[5] = middleMiddleButton;
+		buttonsLeft[6] = bottomMiddleButton;
+		buttonsLeft[7] = bottomLeftButton;
+		buttonsLeft[8] = bottomRightButton;
+		changeToLoginScreen();
+		setVisible(true);
 	}
 	
-	public void changeToGameMode( GameLogic gl, JPanel lastPanel)
+	public void changeToGameMode()
 	{
 		JPanel gameModePanel = new JPanel();
 		gameModePanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		
 		gameModePanel.setLayout(null);
 		JPanel panel = new JPanel();
 		panel.setBounds(5, 30, 424, 238);
@@ -122,39 +147,49 @@ public class TicTacToeGui extends JFrame  {
 		}
 		    topLeftButton.addActionListener(e ->{
 		    	topLeftButton.setEnabled(false);
-		    	ToQuestionFrame(gl,0);
+		    	gl.PickSquare(0);
+		    	gl.GetQuesiton();
+		    	
 		    });
 			topMiddleButton.addActionListener(e ->{
 				topMiddleButton.setEnabled(false);
-		    	ToQuestionFrame(gl,1);
+				gl.PickSquare(1);
+				gl.GetQuesiton();
 		    });
 			topRightButton.addActionListener(e ->{
+				gl.PickSquare(2);
 				topRightButton.setEnabled(false);
-		    	ToQuestionFrame(gl,2);
+				gl.GetQuesiton();
 		    });
 			middleLeftButton.addActionListener(e ->{
+				gl.PickSquare(3);
 				middleLeftButton.setEnabled(false);
-		    	ToQuestionFrame(gl,3);
-		    });
-			middleRightButton.addActionListener(e ->{
-				middleRightButton.setEnabled(false);
-		    	ToQuestionFrame(gl,4);
+				gl.GetQuesiton();
 		    });
 			middleMiddleButton.addActionListener(e ->{
+				gl.PickSquare(4);
 				middleMiddleButton.setEnabled(false);
-		    	ToQuestionFrame(gl,5);
+				gl.GetQuesiton();
 		    });
-			bottomMiddleButton.addActionListener(e ->{
-				bottomMiddleButton.setEnabled(false);
-		    	ToQuestionFrame(gl,6);
+			middleRightButton.addActionListener(e ->{
+				gl.PickSquare(5);
+				middleRightButton.setEnabled(false);
+				gl.GetQuesiton();
 		    });
 			bottomLeftButton.addActionListener(e ->{
+				gl.PickSquare(6);
 				bottomLeftButton.setEnabled(false);
-		    	ToQuestionFrame(gl,7);
+				gl.GetQuesiton();
+		    });
+			bottomMiddleButton.addActionListener(e ->{
+				gl.PickSquare(7);
+				bottomMiddleButton.setEnabled(false);
+				gl.GetQuesiton();
 		    });
 			bottomRightButton.addActionListener(e ->{
+				gl.PickSquare(8);
 				bottomRightButton.setEnabled(false);
-		    	ToQuestionFrame(gl,8);
+				gl.GetQuesiton();
 		    });
 		// this should be changeable to whatever player went last, so well need to keep track of that at some point
 		 turnMessage = new JLabel("Player X please go");
@@ -165,8 +200,40 @@ public class TicTacToeGui extends JFrame  {
 		mainFrame.addLayoutComponent(gameModePanel, "gameModePanel");
 		mainFrame.show(masterPane, "gameModePanel");
 	}
+	
+    public void changeToPlayerSelect(GameLogic gameLogic)
+	{
+		JPanel playerSelectPanel = new JPanel();
+		playerSelectPanel.setLayout(null);
+		
+		 PVPButton = new JButton("Single Player");
+		 PVPButton.addActionListener(e ->{
+			gl.setMultiplayer(false);
+			changeToGameMode();
+		});
+		 PVPButton.setBounds(10, 101, 121, 53);
+		playerSelectPanel.add(PVPButton);
+		
+		 PVEButton = new JButton("Two Players");
+		 PVEButton.setBounds(313, 101, 121, 53);
+		 PVEButton.addActionListener(e ->{
+			gl.setMultiplayer(true);
+			changeToGameMode();
+			
+		});
+		playerSelectPanel.add(PVEButton);
+		
+		JLabel lblNewLabel = new JLabel("Choose what game mode you want");
+		lblNewLabel.setBounds(134, 22, 250, 79);
+		playerSelectPanel.add(lblNewLabel);
+		masterPane.add(playerSelectPanel);
+		mainFrame.addLayoutComponent(playerSelectPanel, "playerSelectPanel");
+		mainFrame.show(masterPane, "playerSelectPanel");
+	}
+	
+	
 
-	public void ToQuestionFrame( GameLogic gl, int buttonPressed)
+	public void ToQuestionFrame(String question2)
 	{
 		JPanel questionPanel = new JPanel();
 		questionPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -181,26 +248,28 @@ public class TicTacToeGui extends JFrame  {
 		
 		 agreeButton = new JButton("  Agree ");
 		questionPanel.add(agreeButton, BorderLayout.EAST);
-		
-		questionMessage = new JLabel("               Question");
-		questionMessage.setToolTipText("");
-		questionMessage.setForeground(Color.BLACK);
-		questionMessage.setBackground(Color.WHITE);
-		questionPanel.add(questionMessage, BorderLayout.CENTER);
+		String Question = question2;
+		JTextArea questionPlace = new JTextArea();
+		questionPlace.setText(Question);
+		questionPlace.setEditable(false);
+		questionPlace.setLineWrap(true);
+		questionPlace.setToolTipText("");
+		questionPlace.setForeground(Color.BLACK);
+		questionPlace.setBackground(Color.WHITE);
+		questionPanel.add(questionPlace, BorderLayout.CENTER);
 		
 		disagreeButton.addActionListener(e ->{
-			changeToGameMode( gl,questionPanel);
+			gl.AnswerQuestion(false);
 		});
 		agreeButton.addActionListener(e ->{
-			//changeToGameMode( gl,questionPanel);
-			ToRoundOverFrame(gl);
+			gl.AnswerQuestion(true);
 		});
 		masterPane.add(questionPanel);
 		mainFrame.addLayoutComponent(questionPanel, "questionPanel");
 		mainFrame.show(masterPane, "questionPanel");
 		
 	}
-	public void ToRoundOverFrame(GameLogic gl)
+	public void ToRoundOverFrame(boolean currentPlayer, int[] scoreBoard)
 	{
 		JPanel roundOverPanel = new JPanel();
 		roundOverPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -220,7 +289,7 @@ public class TicTacToeGui extends JFrame  {
 				buttonsLeft[i].setEnabled(true);
 				buttonsLeft[i].setText("");
 			}
-			changeToGameMode(gl,roundOverPanel);
+			//changeToPlayGameorCheckScoreMode();
 		});
 	
 		exitButton.setBounds(10, 194, 89, 57);
@@ -234,11 +303,126 @@ public class TicTacToeGui extends JFrame  {
 		mainFrame.show(masterPane, "roundOverPanel");
 	}
 	
-	public void updateBoardView(){
-		// FIller method to make it compile this method should update the board based on the answer which the player selected
+	public void changeToLoginScreen(){
+		JPanel loginPanel = new JPanel();
+		loginPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		loginPanel.setLayout(null);
+		
+		exitButton = new JButton("EXIT");
+		exitButton.addActionListener(e ->{
+			System.exit(0);
+		});
+		
+		JTextField textField = new JTextField();
+		textField.setBounds(10, 47, 414, 20);
+		loginPanel.add(textField);
+		textField.setColumns(10);
+		
+		JLabel lblUserName = new JLabel("User Name");
+		lblUserName.setBounds(10, 22, 81, 14);
+		loginPanel.add(lblUserName);
+		
+		JButton btnNewButton = new JButton("Create Account");
+		btnNewButton.setBounds(10, 196, 130, 55);
+		loginPanel.add(btnNewButton);
+		
+		JButton btnLogin = new JButton("Login");
+		btnLogin.setBounds(317, 196, 107, 55);
+		loginPanel.add(btnLogin);
+		
+		// this is the action listener for the login button, somebody please link this to the login checks
+		btnLogin.addActionListener(e ->
+		{
+			userName = textField.getText();
+			if(loginAccount.CheckUser(1,userName)==true)
+			{
+				ToStatsFrame();
+			}
+			else{
+				JOptionPane.showMessageDialog(null, "User not found");
+			}
+		});
+		
+		// this is the action listener for the create account button, somebody please add in the functionality to create a new account
+		btnNewButton.addActionListener(e ->
+		{
+			userName = textField.getText();
+			if(loginAccount.CheckUser(1,userName)==true)
+			{
+				JOptionPane.showMessageDialog(null, "Account already exists");
+				try {
+					loginAccount = new User("UserDB.txt");
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+			else if(userName.isEmpty()==true){
+				JOptionPane.showMessageDialog(null, "requires user name");
+				try {
+					loginAccount = new User("UserDB.txt");
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+			else if(userName.isEmpty()!=true){
+				
+				loginAccount.makeNewUser(userName);
+				try {
+					loginAccount.updateDB();
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				JOptionPane.showMessageDialog(null, "Account "+userName+" has been made");
+				try {
+					loginAccount = new User("UserDB.txt");
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		masterPane.add(loginPanel);
+		mainFrame.addLayoutComponent(loginPanel, "loginPanel");
+		mainFrame.show(masterPane, "loginPanel");
 	}
 	
-	public void ToStatsFrame( GameLogic gl)
+	/*
+	 * undocumented question
+	 */
+	public void setTimer(String x){
+		timerMessage.setText(x);
+	}
+	public void changeToPlayGameorCheckScoreMode(int[] scoreBoard){
+		JPanel PGOCSM_Panel = new JPanel();
+		PGOCSM_Panel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		PGOCSM_Panel.setLayout(null);
+		
+		JButton playAgainButton = new JButton("Play Again?");
+		playAgainButton.addActionListener(e -> {
+				//changeToPlayerSelect();			
+	
+		});
+		playAgainButton.setBounds(303, 172, 121, 79);
+		PGOCSM_Panel.add(playAgainButton);
+		
+		JLabel lblNewLabel = new JLabel("says who won the latest game");
+		lblNewLabel.setBounds(134, 22, 184, 79);
+		PGOCSM_Panel.add(lblNewLabel);
+		
+		JButton toStatsButton = new JButton("Check Stats");
+		toStatsButton.setBounds(10, 172, 121, 79);
+		PGOCSM_Panel.add(toStatsButton);
+		toStatsButton.addActionListener(e ->{
+			ToStatsFrame();
+		});
+		masterPane.add(PGOCSM_Panel);
+		mainFrame.addLayoutComponent(PGOCSM_Panel, "PGOCSM_Panel");
+		mainFrame.show(masterPane, "PGOCSM_Panel");
+	}
+	public void ToStatsFrame()
 	{
 		JPanel statsPanel = new JPanel();
 		statsPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -248,7 +432,10 @@ public class TicTacToeGui extends JFrame  {
 		lblNewLabel.setBounds(10, 45, 89, 14);
 		statsPanel.add(lblNewLabel);
 		
-		gamesWon = new JLabel("Number of wins");
+		int winNumber = loginAccount.P1GP;
+		int totalGames = loginAccount.P1GW;
+		int losses = totalGames-winNumber;
+		gamesWon = new JLabel(Integer.toString(winNumber));
 		gamesWon.setBounds(258, 45, 166, 14);
 		statsPanel.add(gamesWon);
 		
@@ -260,7 +447,7 @@ public class TicTacToeGui extends JFrame  {
 		lblNewLabel_3.setBounds(10, 70, 89, 14);
 		statsPanel.add(lblNewLabel_3);
 		
-		JLabel lblNewLabel_4 = new JLabel("Number of loses");
+		JLabel lblNewLabel_4 = new JLabel(Integer.toString(losses));
 		lblNewLabel_4.setBounds(258, 70, 166, 14);
 		statsPanel.add(lblNewLabel_4);
 		
@@ -268,7 +455,7 @@ public class TicTacToeGui extends JFrame  {
 	    gamesPlayed.setBounds(10, 95, 188, 14);
 	    statsPanel.add(gamesPlayed);
 		
-		JLabel lblNewLabel_6 = new JLabel("Number of games played");
+		JLabel lblNewLabel_6 = new JLabel(Integer.toString(totalGames));
 		lblNewLabel_6.setBounds(258, 95, 166, 14);
 		statsPanel.add(lblNewLabel_6);
 		
@@ -289,84 +476,6 @@ public class TicTacToeGui extends JFrame  {
 		mainFrame.show(masterPane,"statsPanel" );
 		
 	}
-	public TicTacToeGui(GameLogic gl)
-	{	
-		mainFrame= new CardLayout(0,0);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 471, 336);
-	    masterPane = new JPanel();
-		masterPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		masterPane.setLayout(mainFrame);
-		setContentPane(masterPane);
-		
-		
-		JPanel loginPanel = new JPanel();
-		loginPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		loginPanel.setLayout(null);
-		
-		exitButton = new JButton("EXIT");
-		exitButton.addActionListener(e ->{
-			System.exit(0);
-		});
-		
-		JTextField textField = new JTextField();
-		textField.setBounds(10, 47, 414, 20);
-		loginPanel.add(textField);
-		textField.setColumns(10);
-		
-		JLabel lblUserName = new JLabel("User Name");
-		lblUserName.setBounds(10, 22, 81, 14);
-		loginPanel.add(lblUserName);
-		
-		JLabel lblPassword = new JLabel("Password");
-		lblPassword.setBounds(10, 78, 81, 14);
-		loginPanel.add(lblPassword);
-		
-		loginTextField = new JTextField();
-		loginTextField.setColumns(10);
-		loginTextField.setBounds(10, 103, 414, 20);
-		loginPanel.add(loginTextField);
-		
-		JButton btnNewButton = new JButton("Create Account");
-		btnNewButton.setBounds(10, 196, 130, 55);
-		loginPanel.add(btnNewButton);
-		
-		JButton btnLogin = new JButton("Login");
-		btnLogin.setBounds(317, 196, 107, 55);
-		loginPanel.add(btnLogin);
-		
-		// this is the action listener for the login button, somebody please link this to the login checks
-		btnLogin.addActionListener(e ->
-		{
-			ToStatsFrame(gl);
-		});
-		
-		// this is the action listener for the create account button, somebody please add in the functionality to create a new account
-		btnNewButton.addActionListener(e ->
-		{
-			JOptionPane.showMessageDialog(null, "This does nothing for now, but will create an account later and message you about it");
-		});
-		topLeftButton = new JButton("");
-		topMiddleButton= new JButton("");
-		topRightButton= new JButton("");
-		middleLeftButton= new JButton("");
-		middleRightButton= new JButton("");
-		middleMiddleButton= new JButton("");
-		bottomMiddleButton= new JButton("");
-		bottomLeftButton= new JButton("");
-		bottomRightButton= new JButton("");
-		buttonsLeft[0] = topLeftButton;
-		buttonsLeft[1] = topMiddleButton;
-		buttonsLeft[2] = topRightButton;
-		buttonsLeft[3] = middleLeftButton;
-		buttonsLeft[4] = middleRightButton;
-		buttonsLeft[5] = middleMiddleButton;
-		buttonsLeft[6] = bottomMiddleButton;
-		buttonsLeft[7] = bottomLeftButton;
-		buttonsLeft[8] = bottomRightButton;
-		
-		masterPane.add(loginPanel);
-		setVisible(true);
-	}
+	
 }
 
