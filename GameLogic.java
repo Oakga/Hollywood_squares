@@ -429,7 +429,7 @@ public class GameLogic {
 		} else {
 			CorrectAnswer = false;
 		}
-		Display.ToQuestionFrame(Question);
+		Display.ToQuestionFrame(Question+"\n"+correctAnswerString);
 		ContinueTurn();
 	}
 
