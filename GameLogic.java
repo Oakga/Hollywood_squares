@@ -375,17 +375,21 @@ public class GameLogic {
 			System.out.println("wrong Answer");
 			returnVal = false;
 			char tempGameBoard[] = new char[9];
-			tempGameBoard = gameBoard;
+			for(int i=0; i<gameBoard.length; i++){
+				tempGameBoard[i] = gameBoard[i];
+			}
 			// switch the current player temporarily so the next functions work properly
 			CurrentPlayer = !CurrentPlayer;
 			SetSquare(getShape()); // .charAt(0)
-			int currentPlayerint = 0;
+			int currentPlayerint = 1;
 			if(CurrentPlayer){
-				currentPlayerint = 1;
+				currentPlayerint = 2;
 			}
 			if(RoundWonCheck()==currentPlayerint){
-
-				gameBoard = tempGameBoard;
+				System.out.println("player " + currentPlayerint + " would win on the other player's disagree");
+				for(int i=0; i<gameBoard.length; i++){
+					gameBoard[i] = tempGameBoard[i];
+				}
 			}
 			CurrentPlayer = !CurrentPlayer;
 			// now we need to see if the opponent can get this position without winning
