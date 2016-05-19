@@ -189,7 +189,7 @@ public class GameLogic {
 	// Changes: return type to char
 	public char getShape() {
 		char s;
-		if (CurrentPlayer = true)
+		if (CurrentPlayer == true)
 			s = 'X';
 		else
 			s = 'O';
