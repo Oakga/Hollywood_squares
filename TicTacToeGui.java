@@ -196,7 +196,7 @@ public class TicTacToeGui extends JFrame  {
 		}
 	}
 	
-	public void changeToGameMode()
+	public void changeToGameMode(char player)
 	{
 		JPanel gameModePanel = new JPanel();
 		gameModePanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -211,7 +211,7 @@ public class TicTacToeGui extends JFrame  {
 		}
 		    
 		// this should be changeable to whatever player went last, so well need to keep track of that at some point
-		 turnMessage = new JLabel("Player X please go");
+		 turnMessage = new JLabel("Player "+ player +" please go");
 		 turnMessage.setBounds(5, 5, 424, 14);
 		gameModePanel.add(turnMessage);
 		gameModePanel.add(panel);
