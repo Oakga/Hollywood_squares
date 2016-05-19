@@ -505,8 +505,8 @@ public class TicTacToeGui extends JFrame  {
 		lblNewLabel.setBounds(10, 45, 89, 14);
 		statsPanel.add(lblNewLabel);
 		
-		int winNumber = loginAccount.P1GP;
-		int totalGames = loginAccount.P1GW;
+		int winNumber = loginAccount.P1GW;
+		int totalGames = loginAccount.P1GP;
 		int losses = totalGames-winNumber;
 		gamesWon = new JLabel(Integer.toString(winNumber));
 		gamesWon.setBounds(258, 45, 166, 14);
