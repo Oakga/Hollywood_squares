@@ -248,7 +248,7 @@ public class GameLogic {
 		// This function needs to be updated to use the timers properly. 
 		TimerObject = new Timer();
 		TimerTask timerup = new TimerTask() { public void run() { TimeUp(); }};
-		int seconds = 3;
+		int seconds = 5;
 		TimerObject.schedule(timerup,seconds*1000);
 
 		TimerTask updateTimer = new TimerTask() {
