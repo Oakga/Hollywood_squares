@@ -293,7 +293,7 @@ public class GameLogic {
 	// return -1 if game is tie
 	// return 3 when there is an error and previous cases doesn't match
 	private int RoundWonCheck() {
-		char winnerSign = 0;
+		char winnerSign = 'n';
 		int[] majorityCounter = new int[2];
 		for (int i = 0; i < 9; i++) {
 			if (gameBoard[i]=='x'){
