@@ -423,7 +423,7 @@ public class TicTacToeGui extends JFrame  {
 		
 		JButton playAgainButton = new JButton("Play Again?");
 		playAgainButton.addActionListener(e -> {
-				//changeToPlayerSelect();			
+				changeToPlayerSelect(gl);		
 	
 		});
 		playAgainButton.setBounds(303, 172, 121, 79);
