@@ -60,9 +60,6 @@ public class TicTacToeGui extends JFrame  {
 	private JLabel turnMessage;
 	private JButton exitButton;
 	private JTextField loginTextField;
-	/*
-	 * all the buttons had to be changed to public, add to the documentation 
-	 */
 	JButton topLeftButton;
 	JButton topMiddleButton;
 	JButton topRightButton;
@@ -79,10 +76,6 @@ public class TicTacToeGui extends JFrame  {
 	private JLabel timerMessage;
 	private JLabel questionMessage;
 	private JButton checkScoreButton;
-	
-	/*
-	 * these five items are extra, we will need too add them to the documentation 
-	 */
 	private GameLogic gl;
 	private JPanel masterPane;
 	public JButton[] buttonsLeft = new JButton[9];
@@ -91,15 +84,33 @@ public class TicTacToeGui extends JFrame  {
 	private String userName;
 	private char winner;
 	
+	public void  questionButtonEnabler(boolean on)
+	{
+		if(on==true){
+			agreeButton.setEnabled(true);
+			disagreeButton.setEnabled(true);
+		}
+		else{
+			agreeButton.setEnabled(false);
+			disagreeButton.setEnabled(false);
+		}
+	}
 	public void timerRanOutMessage(boolean rightOrWrong)
 	{
-
 		if(rightOrWrong==true){
 			JOptionPane.showMessageDialog(null,"disagree was chosen because time ran out, you were right anyway!");
 		}
 		else{
 		JOptionPane.showMessageDialog(null,"disagree was chosen because time ran out, you were wrong :(");
 		}	
+	}
+	public void machineMessage(boolean rightOrWrong){
+		if(rightOrWrong==true){
+			JOptionPane.showMessageDialog(null,"the computer was corrent corrent on its guess");
+		}
+		else{
+			JOptionPane.showMessageDialog(null,"the computer was incorrent corrent on its guess");
+		}
 	}
 	public TicTacToeGui(GameLogic gameLogic)
 	{	
@@ -264,8 +275,8 @@ public class TicTacToeGui extends JFrame  {
 		questionPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		questionPanel.setLayout(new BorderLayout(0, 0));
 		
-		 timerMessage = new JLabel("TIMER");
-		 timerMessage.setFont(new Font("Tahoma", Font.BOLD, 21));
+		timerMessage = new JLabel("TIMER");
+		timerMessage.setFont(new Font("Tahoma", Font.BOLD, 21));
 		questionPanel.add(timerMessage, BorderLayout.NORTH);
 		
 		disagreeButton = new JButton("Disagree");
@@ -316,18 +327,8 @@ public class TicTacToeGui extends JFrame  {
 		winner =' ';
 		if(currentPlayer==true){
 			winner='1';
-			try{loginAccount = new User("UserDB.txt");}
-			catch(Exception e){e.printStackTrace();}
-			loginAccount.updateScore(1);
-			try{loginAccount.updateDB();}
-			catch(Exception e){e.printStackTrace();}
 		}
 		if(currentPlayer==false){
-			try{loginAccount = new User("UserDB.txt");}
-			catch(Exception e){e.printStackTrace();}
-			loginAccount.updateScore(2);
-			try{loginAccount.updateDB();}
-			catch(Exception e){e.printStackTrace();}
 			winner='2';
 		}
 		JLabel lblNewLabel = new JLabel("player "+winner+" has won "+"\n"+"the score is "+scoreBoard[0]+" to "+scoreBoard[1]);
@@ -466,7 +467,11 @@ public class TicTacToeGui extends JFrame  {
         winner=' ';
         if(scoreBoard[0]==2)winner='1';
         if(scoreBoard[1]==2)winner='2';
-
+        try{loginAccount = new User("UserDB.txt");}
+			catch(Exception e){e.printStackTrace();}
+			loginAccount.CheckUser(winner,userName);
+			try{loginAccount.updateDB();}
+			catch(Exception e){e.printStackTrace();}
 		JLabel lblNewLabel = new JLabel("player "+winner+" won the game!");
 		lblNewLabel.setBounds(134, 22, 184, 79);
 		PGOCSM_Panel.add(lblNewLabel);
