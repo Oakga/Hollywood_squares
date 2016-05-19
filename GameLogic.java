@@ -20,7 +20,7 @@ public class GameLogic {
 	private int roundsWonP1;
 	private int roundsWonP2;
 	private Timer TimerObject;
-	public boolean turn =true;
+	// public boolean turn =true;
 
 	public GameLogic() {
 		currentRound = 1;
@@ -36,9 +36,9 @@ public class GameLogic {
 	}
 
 
-	void StartGame() {
+	public void StartGame() {
 		currentRound = 1;
-		gameboard = new char[9];
+		// gameboard = new char[9];
 		scoreBoard = new int[2];
 		StartRounds();
 	}
@@ -50,7 +50,7 @@ public class GameLogic {
 
 
 	public void PlayerTurnStart() {
-		
+		Display.changeToGameMode();
 		if (!Multiplayer  && !CurrentPlayer) {
 			Random rand = new Random();
 			int square = rand.nextInt(8);// select one of the 9 squares from
@@ -99,7 +99,7 @@ public class GameLogic {
 	// Purpose: gui call this method after player give answer
 	private void ContinueTurn() {
 		// StartTimer();
-		if (!Multiplayer && !CurrentPlayer) {
+		if (!Multiplayer && CurrentPlayer) {
 			/*
 			 * throws InterruptedException { Thread.sleep(400); }
 			 */
@@ -117,16 +117,15 @@ public class GameLogic {
 
 	// Purpose: end turn of the current player (act as a wrapper method)
 	private void endTurn() {
-		//UpdateBoardBasedOnAnswer();
+		UpdateBoardBasedOnAnswer();
 		int winner = RoundWonCheck();
-		if (winner == -1) {
-			turn = !turn;
+		// System.out.println(winner)
+		if (winner == 0) {
 			SwitchPlayer(true);
 			PlayerTurnStart();
 		} else {
 			// winner = CurrentPlayer;
 			UpdateScoreBoard();// only you can win on your turn
-			turn = !turn;
 			int gameWinner = GameWonCheck();
 			if (gameWinner != -1) {
 				System.out.println("Round over");
@@ -212,7 +211,18 @@ public class GameLogic {
 	}// done
 
 	private void SwitchPlayer(Boolean Player) {
+		String p = "player2";
+		if(CurrentPlayer==true){
+			p = "player1";
+		}
+		System.out.println("old player is " + p );
 		CurrentPlayer = !CurrentPlayer;
+		p = "player2";
+		if(CurrentPlayer==true){
+			p = "player1";
+		}
+		System.out.println("Current player is " + p );
+		
 	}
 	
 	public boolean PickSquare(int square) {
@@ -227,7 +237,8 @@ public class GameLogic {
 		// This function needs to be updated to use the timers properly. 
 		TimerObject = new Timer();
 		//offically schedule is meant to take in a timertask, but it should hopeuflly work like this, otherwise there is a lamda way to do it i presume
-		TimerObject.schedule(TimeUp(),30*1000)// double check that this is 30 seconds
+		// FIX THIS
+		// TimerObject.schedule(TimeUp(),30*1000);// double check that this is 30 seconds
 
 		/*this.Timer = new Thread();
 		Timer.start();
@@ -241,10 +252,10 @@ public class GameLogic {
 	}// done
 
 	// Purpose: to end the turn
-	private void TimeUp() {
+	private Boolean TimeUp() {
 		// this was never used in the activity diagram and was not clear in the class diagram, but i assume it is
 		// meant to control what happens when the timer countdown is complete
-		AnswerQuestion(1); // answer the question saying the player disagrees
+		return AnswerQuestion(false); // answer the question saying the player disagrees
 /*		int i;
 		if(CurrentPlayer=true){i=1;}
 		else i=2;
@@ -288,9 +299,30 @@ public class GameLogic {
 			winnerSign = gameBoard[0];
 		else if (checkWinner(2, 4, 6))
 			winnerSign = gameBoard[2];
+		/*if (checkWinner())
+			winnerSign = gameBoard[0];
+		else if (checkWinner())
+			winnerSign = gameBoard[3];
+		else if (checkWinner())
+			winnerSign = gameBoard[6];
+		else if (checkWinner())
+			winnerSign = gameBoard[0];
+		else if (checkWinner())
+			winnerSign = gameBoard[1];
+		else if (checkWinner())
+			winnerSign = gameBoard[2];
+		else if (checkWinner())
+			winnerSign = gameBoard[0];
+		else if (checkWinner())
+			winnerSign = gameBoard[2];*/
 
-		if (winnerSign == getShape()){
-			return CurrentPlayer;
+/*		if (winnerSign == getShape()){
+			if(CurrentPlayer){
+				return 1;
+			}
+			else{
+				return 0;
+			}
 		}
 		else if(winnerSign != "n"){
 			return ((CurrentPlayer+1)%2);
@@ -300,13 +332,14 @@ public class GameLogic {
 				if(CheckSquareEmpty(i)){
 					return -1;
 					break;
+				}
 			}
 			return 2; // there is a tie since all pieces are non empty
 		}
 		
-	}// done
+	}// done*/
 
-/*		if (winnerSign == 'O') {
+		if (winnerSign == 'O') {
 			return 1;
 		} else if (winnerSign == 'X') {
 			return 2; 
@@ -319,7 +352,7 @@ public class GameLogic {
 			}
 		}
 		return 3;
-	}*/
+	}
 
 	// Purpose: give answer if parameter is boolean
 	// Changes: return type to boolean
@@ -327,8 +360,9 @@ public class GameLogic {
 	// ALSO IN THE ACTIVTY DIAGRAM WE HAVE A CHECKANSWER() method that doesn't seem to exist in the class diagrams, 
 	// Rather that function exists only in the questionbank
 	public boolean AnswerQuestion(Boolean answer) {
-		KillTimer();
-		Boolean returnVal;
+		// Sysetm.out.println("you answered");
+		// KillTimer();
+		boolean returnVal;
 		/*String answerInString;
 		if (answer = true)
 			answerInString = "agree";
@@ -344,21 +378,27 @@ public class GameLogic {
 		// WHERE IT HELD WHAT THE CORRECT ANSWER WAS.
 		if (answer == CorrectAnswer) {
 			//CorrectAnswer = true;
+			System.out.println("right Answer");
 			returnVal = true;
-			SetSquare(getShape().charAt(0));
+			SetSquare(getShape());// .charAt(0) 
 			if(SecretSquare== currentSquare){
-				PickedSecretSquare == True;
-				PrizesGiven[0]="A new Car"
+				PickedSecretSquare = true;
+				PrizesGiven[0]="A new Car";
 			}
 			// now we need to set the square to the current players value
 		} else{
 			//CorrectAnswer = false;
+			System.out.println("wrong Answer");
 			returnVal = false;
 			char tempGameBoard[] = new char[9];
 			// switch the current player temporarily so the next functions work properly
 			CurrentPlayer = !CurrentPlayer;
-			SetSquare(getShape().charAt(0));
-			if(RoundWonCheck()==CurrentPlayer){
+			SetSquare(getShape()); // .charAt(0)
+			int currentPlayerint = 0;
+			if(CurrentPlayer){
+				currentPlayerint = 1;
+			}
+			if(RoundWonCheck()==currentPlayerint){
 				gameBoard = tempGameBoard;
 			}
 			CurrentPlayer = !CurrentPlayer;
@@ -409,14 +449,17 @@ public class GameLogic {
 		ContinueTurn();
 	}
 
-	private void SetSquare(int squarenum) {//changed
+	private void SetSquare(char c){
+		gameBoard[currentSquare]=c;
+	}
+	/*private void SetSquare(int squarenum) {//changed
 		if(CurrentPlayer==true){
-			Display.buttonsLeft[squarenum].setText("O");
+			//Display.buttonsLeft[squarenum].setText("O");
 			gameBoard[squarenum]='O';
 		}
 		else{
 			gameBoard[squarenum]='X';
-			Display.buttonsLeft[squarenum].setText("X");
+			//Display.buttonsLeft[squarenum].setText("X");
 		}
 	}
 	private void resetSquare(int squarenum) {//changed
@@ -428,7 +471,7 @@ public class GameLogic {
 			Display.buttonsLeft[squarenum].setEnabled(true);
 			gameBoard[squarenum]='n';
 		}
-	}
+	}*/
 
 	private void UpdateGameboard() {
 		for (int i = 0; i < 9; i++) {
@@ -436,16 +479,27 @@ public class GameLogic {
 		}
 	}
 
-	// Purpose: check Winner of the line (will be called by RoundWoncheck)
+/*	// Purpose: check Winner of the line (will be called by RoundWoncheck)
 	private int checkWinner() {
 		// it is unclear what this was really meant to do based of class diagram2 and the activty diagram. 
 		// the activity diagram uses it for something that is not its reponsibility... so we didn't end up using it really. 
 		// in some ways it seems to be the exact same thing as roundWonCheck, in other ways it seems to be the same as GameWonCheck so I just never used it
 		return 0;
-	}
+	}*/
+	private boolean checkWinner(int square1, int square2, int square3) {
+		if (gameBoard[square1] == gameBoard[square2]) {
+			if (gameBoard[square2] == gameBoard[square3])
+				return true;
+			else
+				return false;
+		} else
+			return false;
+	}// done
 
 	private void UpdateBoardBasedOnAnswer() {
-		//Display.changeToPlayerSelect(this);
+		Display.setButtons(gameBoard);
+		Display.changeToGameMode();
+
 	}
 
 	private int GameWonCheck() {

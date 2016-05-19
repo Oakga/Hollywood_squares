@@ -91,10 +91,10 @@ public class TicTacToeGui extends JFrame  {
 	private String userName;
 	
 
-	public void changeTurn(GameLogic gl){
+/*	public void changeTurn(GameLogic gl){
 		if(gl.turn==false)gl.turn=true;
 		if(gl.turn==true)gl.turn=false;
-	}
+	}*/
 	public TicTacToeGui(GameLogic gameLogic)
 	{	
 		gl= gameLogic;
@@ -123,29 +123,15 @@ public class TicTacToeGui extends JFrame  {
 		buttonsLeft[1] = topMiddleButton;
 		buttonsLeft[2] = topRightButton;
 		buttonsLeft[3] = middleLeftButton;
-		buttonsLeft[4] = middleRightButton;
-		buttonsLeft[5] = middleMiddleButton;
-		buttonsLeft[6] = bottomMiddleButton;
-		buttonsLeft[7] = bottomLeftButton;
+		buttonsLeft[4] = middleMiddleButton;
+		buttonsLeft[5] = middleRightButton;
+		buttonsLeft[6] = bottomLeftButton;
+		buttonsLeft[7] = bottomMiddleButton;
 		buttonsLeft[8] = bottomRightButton;
 		changeToLoginScreen();
 		setVisible(true);
-	}
-	
-	public void changeToGameMode()
-	{
-		JPanel gameModePanel = new JPanel();
-		gameModePanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		gameModePanel.setLayout(null);
-		JPanel panel = new JPanel();
-		panel.setBounds(5, 30, 424, 238);
-		gameModePanel.add(panel);
-		panel.setLayout(new GridLayout(3,3));
-		for(int i =0; i<9; i++)
-		{
-			panel.add(buttonsLeft[i]);
-		}
-		    topLeftButton.addActionListener(e ->{
+
+		topLeftButton.addActionListener(e ->{
 		    	topLeftButton.setEnabled(false);
 		    	gl.PickSquare(0);
 		    	gl.GetQuesiton();
@@ -191,6 +177,33 @@ public class TicTacToeGui extends JFrame  {
 				bottomRightButton.setEnabled(false);
 				gl.GetQuesiton();
 		    });
+	}
+
+	public void setButtons(char[] gm){
+		for(int i=0; i<9;i++){
+			if(gm[i]=='X'){
+				buttonsLeft[i].setText("X");
+			}
+			if(gm[i]=='O'){
+				buttonsLeft[i].setText("O");
+			}
+		}
+	}
+	
+	public void changeToGameMode()
+	{
+		JPanel gameModePanel = new JPanel();
+		gameModePanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		gameModePanel.setLayout(null);
+		JPanel panel = new JPanel();
+		panel.setBounds(5, 30, 424, 238);
+		gameModePanel.add(panel);
+		panel.setLayout(new GridLayout(3,3));
+		for(int i =0; i<9; i++)
+		{
+			panel.add(buttonsLeft[i]);
+		}
+		    
 		// this should be changeable to whatever player went last, so well need to keep track of that at some point
 		 turnMessage = new JLabel("Player X please go");
 		 turnMessage.setBounds(5, 5, 424, 14);
@@ -209,7 +222,7 @@ public class TicTacToeGui extends JFrame  {
 		 PVPButton = new JButton("Single Player");
 		 PVPButton.addActionListener(e ->{
 			gl.setMultiplayer(false);
-			changeToGameMode();
+			//changeToGameMode();
 		});
 		 PVPButton.setBounds(10, 101, 121, 53);
 		playerSelectPanel.add(PVPButton);
@@ -218,7 +231,7 @@ public class TicTacToeGui extends JFrame  {
 		 PVEButton.setBounds(313, 101, 121, 53);
 		 PVEButton.addActionListener(e ->{
 			gl.setMultiplayer(true);
-			changeToGameMode();
+			//changeToGameMode();
 			
 		});
 		playerSelectPanel.add(PVEButton);
