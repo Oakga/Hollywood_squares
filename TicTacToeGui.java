@@ -167,49 +167,40 @@ public class TicTacToeGui extends JFrame  {
 		setVisible(true);
 
 		topLeftButton.addActionListener(e ->{
-		    	topLeftButton.setEnabled(false);
 		    	gl.PickSquare(0);
 		    	gl.GetQuesiton();
 		    	
 		    });
 			topMiddleButton.addActionListener(e ->{
-				topMiddleButton.setEnabled(false);
 				gl.PickSquare(1);
 				gl.GetQuesiton();
 		    });
 			topRightButton.addActionListener(e ->{
 				gl.PickSquare(2);
-				topRightButton.setEnabled(false);
 				gl.GetQuesiton();
 		    });
 			middleLeftButton.addActionListener(e ->{
 				gl.PickSquare(3);
-				middleLeftButton.setEnabled(false);
 				gl.GetQuesiton();
 		    });
 			middleMiddleButton.addActionListener(e ->{
 				gl.PickSquare(4);
-				middleMiddleButton.setEnabled(false);
 				gl.GetQuesiton();
 		    });
 			middleRightButton.addActionListener(e ->{
 				gl.PickSquare(5);
-				middleRightButton.setEnabled(false);
 				gl.GetQuesiton();
 		    });
 			bottomLeftButton.addActionListener(e ->{
 				gl.PickSquare(6);
-				bottomLeftButton.setEnabled(false);
 				gl.GetQuesiton();
 		    });
 			bottomMiddleButton.addActionListener(e ->{
 				gl.PickSquare(7);
-				bottomMiddleButton.setEnabled(false);
 				gl.GetQuesiton();
 		    });
 			bottomRightButton.addActionListener(e ->{
 				gl.PickSquare(8);
-				bottomRightButton.setEnabled(false);
 				gl.GetQuesiton();
 		    });
 	}
@@ -220,9 +211,11 @@ public class TicTacToeGui extends JFrame  {
 		{
 			if(gameBoard[i]=='X'){
 				buttonsLeft[i].setText("X");
+				buttonsLeft[i].setEnabled(false);
 			}
 			else if(gameBoard[i]=='O'){
 				buttonsLeft[i].setText("O");
+				buttonsLeft[i].setEnabled(false);
 			}
 			else{
 				buttonsLeft[i].setText("");
