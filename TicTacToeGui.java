@@ -212,8 +212,8 @@ public class TicTacToeGui extends JFrame  {
 		}
 		    
 		// this should be changeable to whatever player went last, so well need to keep track of that at some point
-		 turnMessage = new JLabel("Player "+ player +" please go");
-		 turnMessage.setBounds(5, 5, 424, 14);
+		turnMessage = new JLabel("Player "+ player +" please go");
+		turnMessage.setBounds(5, 5, 424, 14);
 		gameModePanel.add(turnMessage);
 		gameModePanel.add(panel);
 		masterPane.add(gameModePanel);
@@ -279,10 +279,24 @@ public class TicTacToeGui extends JFrame  {
 		questionPanel.add(questionPlace, BorderLayout.CENTER);
 		
 		disagreeButton.addActionListener(e ->{
-			gl.AnswerQuestion(false);
+			boolean returnValue = true;
+			returnValue=gl.AnswerQuestion(false);
+			if(returnValue==true){
+				JOptionPane.showMessageDialog(null,"that was corret");
+			}
+			if(returnValue==false){
+				JOptionPane.showMessageDialog(null,"that was incorrent");
+			}
 		});
 		agreeButton.addActionListener(e ->{
-			gl.AnswerQuestion(true);
+			boolean returnValue = true;
+			returnValue=gl.AnswerQuestion(true);
+			if(returnValue==true){
+				JOptionPane.showMessageDialog(null,"that was corret");
+			}
+			if(returnValue==false){
+				JOptionPane.showMessageDialog(null,"that was incorrent");
+			}
 		});
 		masterPane.add(questionPanel);
 		mainFrame.addLayoutComponent(questionPanel, "questionPanel");
