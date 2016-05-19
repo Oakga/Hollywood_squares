@@ -5,12 +5,11 @@ import java.util.LinkedList;
 import java.util.Random;
 import java.util.Scanner;
 
-
 public class QuestionBank {
 	
 	private int size;
 	private Hashtable<Integer, LinkedList> myHashTable;
-	private LinkedList current;
+	//private LinkedList current;
 	
 	//constructor
 	QuestionBank(String [] args){
@@ -23,22 +22,17 @@ public class QuestionBank {
 		return myHashTable;
 	}
 	
-	public void setmyHashTable(Hashtable<Integer, LinkedList> hash){
-		myHashTable = hash;
-	}
 	
 	public int getsize(){
 		return myHashTable.size();
 	}
 	
-	public void setsize(int n){
-		size = n;
-	}
 	//takes the text file and nakes the hashtable of questions and answers 
 	public void makeQuestionBank(String [] args){
 		int key = 0;
 		String splitString;
 		myHashTable = new Hashtable<Integer, LinkedList>();
+		
 		
 		try{
 			Scanner inFile = new Scanner(new FileReader(args[0]));
@@ -65,15 +59,17 @@ public class QuestionBank {
 		}//try
 		
 		catch(FileNotFoundException e){
-			System.out.println("Question Bank File not Found!");
+			System.out.println("QuestionDB.txt File not Found!");
 			
 		}//catch
 		
 		
-		//System.out.print(myHashTable);
 	}
 	
 	//gets a random question when asked for and remove the question from the hash table
+	//LinkedList.getFirst() stores the question
+	//LinkedList.getLast() stores the correct answer, if the answer is "agree" and the player gives "agree",
+	//only that time the answer will be counted as correct. same for "disagree"
 	public LinkedList getAquestion(){
 		
 	
@@ -93,14 +89,14 @@ public class QuestionBank {
 
 		}
 		
-		current = removedQues;
+		//current = removedQues;
 		return removedQues;	
 	}
 	
-	//checks if an answer is right or wrong given by the celebrity
-	public boolean checkAnswer(String answer){
+	//checks if an answer is right or wrong given by the player
+	public boolean checkAnswer(String answer, LinkedList myLinkedList){
 		
-		return current.contains(answer.toLowerCase());
+		return myLinkedList.contains(answer.toLowerCase());
 			
 	}
 	
