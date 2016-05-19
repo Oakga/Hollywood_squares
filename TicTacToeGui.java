@@ -189,7 +189,7 @@ public class TicTacToeGui extends JFrame  {
 			else if(gameBoard[i]=='O'){
 				buttonsLeft[i].setText("O");
 			}
-			else if{
+			else{
 				buttonsLeft[i].setText("");
 				buttonsLeft[i].setEnabled(true);
 			}
