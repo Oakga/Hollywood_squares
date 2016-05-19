@@ -91,7 +91,7 @@ public class TicTacToeGui extends JFrame  {
 	private String userName;
 	private char winner;
 	
-	public timerRanOutMessage(boolean rightOrWrong)
+	public void timerRanOutMessage(boolean rightOrWrong)
 	{
 
 		if(rightOrWrong==true){
@@ -318,7 +318,6 @@ public class TicTacToeGui extends JFrame  {
 			winner='1';
 			try{loginAccount = new User("UserDB.txt");}
 			catch(Exception e){e.printStackTrace();}
-			User.CheckUser(1,userName);
 			loginAccount.updateScore(1);
 			try{loginAccount.updateDB();}
 			catch(Exception e){e.printStackTrace();}
