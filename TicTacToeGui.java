@@ -393,6 +393,8 @@ public class TicTacToeGui extends JFrame  {
 			}
 			else{
 				JOptionPane.showMessageDialog(null, "User not found");
+				try{loginAccount = new User("UserDB.txt");}
+				catch(Exception r){}
 			}
 		});
 		
