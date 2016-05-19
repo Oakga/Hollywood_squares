@@ -1,5 +1,5 @@
 Tyler 999 999
-Oka 500 500
+Oka 501 501
 Elliot 500 1000
 Redwon 1 3
 Mahedi 5 8

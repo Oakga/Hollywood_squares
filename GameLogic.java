@@ -172,16 +172,17 @@ public class GameLogic {
 			TimerTask nextTurnTimer = new TimerTask() { public void run() { PlayerTurnStart();}};
 			nextStepTimer.schedule(nextTurnTimer,2);
 		} else {
-			SwitchPlayer(true);
+			// SwitchPlayer(true);
 			UpdateBoardBasedOnAnswer(); // we want it to send the info to the gui pretending it is already the next turn
-			SwitchPlayer(true);
+			// SwitchPlayer(true);
 			// winner = CurrentPlayer;
 			UpdateScoreBoard();// only you can win on your turn
 			int gameWinner = GameWonCheck(1);
 			if (gameWinner == -1) {
 				System.out.println("Round over");
 				Display.ToRoundOverFrame(CurrentPlayer, scoreBoard); //show
-
+				
+				SwitchPlayer(true);
 		   		TimerTask nextRoundTimer = new TimerTask() { public void run() { StartRounds(); }};
 				nextStepTimer.schedule(nextRoundTimer,2);
 				
