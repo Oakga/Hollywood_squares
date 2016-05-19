@@ -23,22 +23,25 @@ public class GameLogic {
 	// public boolean turn =true;
 
 	public GameLogic() {
+		Display = new TicTacToeGui(this);
+		Display.setVisible(true);
+	}
+
+	private void StartGame() {
+		PickedSecretSquare = false;
+		PrizesGiven = new String[2];
+
+		CurrentPlayer = true;
 		currentRound = 1;
-		currentSquare = 1;
+		currentSquare = -1;
 		gameBoard = new char[9];
 		scoreBoard = new int[2];
 		SecretSquareSetup();
 		String args[] = new String[1];
 		args[0] = new String("QuestionDB.txt");
 		myQuestionBank = new QuestionBank(args);
-		Display = new TicTacToeGui(this);
-		Display.setVisible(true);
-	}
 
-	private void StartGame() {
-		currentRound = 1;
-		gameBoard = new char[9];
-		scoreBoard = new int[2];
+		UpdateBoardBasedOnAnswer();
 		Display.changeToGameMode(getShape());
 		StartRounds();
 	}
@@ -118,8 +121,10 @@ public class GameLogic {
 
 	// Purpose: end turn of the current player (act as a wrapper method)
 	private void endTurn() {
+
 		int winner = RoundWonCheck();
 		// System.out.println(winner)
+		UpdateBoardBasedOnAnswer();
 		if (winner == 0) {
 			SwitchPlayer(true);
 			PlayerTurnStart();
@@ -137,7 +142,7 @@ public class GameLogic {
 				Display.changeToPlayGameorCheckScoreMode(scoreBoard); //show game stats
 			}
 		}
-		UpdateBoardBasedOnAnswer();
+		
 		// check if there is a winner or board is full
 		// if a player won or it is full, check the round number and either
 		// display the final score or the round score
@@ -353,7 +358,7 @@ public class GameLogic {
 
 		// CORRECT ANSWWER IS BEING REPURPOSED TO STORE IF THE ANSWER THE USER CHOSE IS THE CORRECT ANSWER, AS OPPOSED TO PREVIOUSLY, 
 		// WHERE IT HELD WHAT THE CORRECT ANSWER WAS.
-		if (answer == CorrectAnswer) {
+		if (answer.equals(CorrectAnswer) ) {
 			//CorrectAnswer = true;
 			System.out.println("right Answer");
 			returnVal = true;
@@ -419,7 +424,7 @@ public class GameLogic {
 		LinkedList<String> QuestionString = myQuestionBank.getAquestion();
 		String Question = (String) QuestionString.getFirst();
 		String correctAnswerString = (String) QuestionString.getLast();
-		if (correctAnswerString == "agree") {
+		if (correctAnswerString.equals("agree") ) {
 			CorrectAnswer = true;
 		} else {
 			CorrectAnswer = false;
