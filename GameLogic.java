@@ -130,7 +130,9 @@ public class GameLogic {
 			UpdateBoardBasedOnAnswer();
 			PlayerTurnStart();
 		} else {
-			UpdateBoardBasedOnAnswer();
+			SwitchPlayer(true);
+			UpdateBoardBasedOnAnswer(); // we want it to send the info to the gui pretending it is already the next turn
+			SwitchPlayer(true);
 			// winner = CurrentPlayer;
 			UpdateScoreBoard();// only you can win on your turn
 			int gameWinner = GameWonCheck();
