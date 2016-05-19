@@ -64,35 +64,55 @@ public class GameLogic {
 				Random rand1 = new Random();
 				square = rand1.nextInt(8);// select one of the 9 squares from // 0->8				
 			}
-			switch (square) {
+			PickSquare(square);
+		    GetQuesiton();
+			/*switch (square) {
 				case (0):
-					Display.topLeftButton.doClick();
+					// Display.topLeftButton.doClick();
+					PickSquare(0);
+		    		GetQuesiton();
 					break;
 				case (1):
-					Display.topMiddleButton.doClick();
+					// Display.topMiddleButton.doClick();
+					PickSquare(1);
+		    		GetQuesiton();
 					break;
 				case (2):
-					Display.topRightButton.doClick();
-					break;
+					//Display.topRightButton.doClick();
+					PickSquare(2);
+		    		GetQuesiton();
+		    		break;
 				case (3):
-					Display.middleLeftButton.doClick();
-					break;
+					// Display.middleLeftButton.doClick();
+					PickSquare(3);
+		    		GetQuesiton();
+		    		break;
 				case (4):
-					Display.middleRightButton.doClick();
-					break;
+					// Display.middleRightButton.doClick();
+					PickSquare(4);
+		    		GetQuesiton();
+		    		break;
 				case (5):
-					Display.middleMiddleButton.doClick();
-					break;
+					// Display.middleMiddleButton.doClick();
+					PickSquare(5);
+		    		GetQuesiton();
+		    		break;
 				case (6):
-					Display.bottomMiddleButton.doClick();
-					break;
+					// Display.bottomMiddleButton.doClick();
+					PickSquare(6);
+		    		GetQuesiton();
+		    		break;
 				case (7):
-					Display.bottomLeftButton.doClick();
-					break;
+					// Display.bottomLeftButton.doClick();
+					PickSquare(7);
+		    		GetQuesiton();
+		    		break;
 				case (8):
-					Display.bottomRightButton.doClick();
-					break;
-			}
+					// Display.bottomRightButton.doClick();
+					PickSquare(8);
+		    		GetQuesiton();
+		    		break;
+			}*/
        }
 		// a human player actually picks a square on the gui which should
 		// trigger
