@@ -298,7 +298,7 @@ public class TicTacToeGui extends JFrame  {
 		if(currentPlayer==true)winner='1';
 		if(currentPlayer==false)winner='2';
 		// need to check the gl to see what message to print out and what kind of frame this is going to be
-		JLabel lblNewLabel = new JLabel("player "+winner+" has won"+"\n"+"the score is "+scoreBoard[0]+" to "+scoreBoard[1]);
+		JLabel lblNewLabel = new JLabel("player "+winner+" has won "+"\n"+"the score is "+scoreBoard[0]+" to "+scoreBoard[1]);
 		lblNewLabel.setBounds(10, 24, 414, 35);
 		roundOverPanel.add(lblNewLabel);
 		
