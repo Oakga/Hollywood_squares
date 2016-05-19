@@ -8,7 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.util.concurrent.Semaphore;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -19,39 +18,6 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-
-/*
- * I'm 95% percent sure we dont need any of these variables but im keeping them here for now because they are in the documentation we had 
- * 
- * also, I changed the arguments for the methods because we are going to do different things depending on the state of the game, and we need the GameLogic to do those checks
- * To make those checks work, who ever knows the GameLogic, please put it into the actionLisnter method for each button that does something
- * 
- * VERY IMPORTNAT: the agree button on the question frame will automatically end the round and send you to the round over frame, this was so we could test that frame,
- * please change it back once we have both the agree and disagree button working
- * 
- * 
- * the create account button as of now does not do ANYTHING, but it needs to save whats in the username and password text field ( use .getText() on both those JTextfields ) 
- * and create a user. ( you can also use the JOption pane to tell the user the account was made)
- * 
- * the login button doesn't check for an account it will automatically send you to a blank stats frame, so use the GameLogic to check for a user and then update the stats frame to 
- * show that users stats
- * 
- * the game board buttons only turn off, but dont display X's or O's, once we know a winner, someone add either buttonleft[i].setText("X") or "O". 
- * the buttons also need to be re-enabled if the user gets the answer wrong and the other player does not get the square
- * 
- * 
- * the single player and two player buttons both just send you to the game board frame, so somebody update the GameLogic, so we know what button was pressed.
- * 
- * also the board only says "player x please go", the game logic should be checked so we know who's turn to say it is ( its a simple if statement)
- * 
- * the timer needs to be updated, because right now its blank. ( game logic should just use the .updateText() method every second to it will count down from 60) 
- * 
- * if the timer if still going it should be able to disagree and go back to the game board
- * 
- * thats all folks.
- * 
- * with love, elliot and michael 
- */
 @SuppressWarnings("serial")
 public class TicTacToeGui extends JFrame  {
 	
@@ -78,12 +44,29 @@ public class TicTacToeGui extends JFrame  {
 	private JButton checkScoreButton;
 	private GameLogic gl;
 	private JPanel masterPane;
-	public JButton[] buttonsLeft = new JButton[9];
+	private JButton[] buttonsLeft = new JButton[9];
 	private CardLayout mainFrame;
 	private User loginAccount;
 	private String userName;
 	private char winner;
-	
+	public void setButtons(char[] gameBoard)
+	{
+		for(int i=0; i<9;i++)
+		{
+			if(gameBoard[i]=='X'){
+				buttonsLeft[i].setText("X");
+				buttonsLeft[i].setEnabled(false);
+			}
+			else if(gameBoard[i]=='O'){
+				buttonsLeft[i].setText("O");
+				buttonsLeft[i].setEnabled(false);
+			}
+			else{
+				buttonsLeft[i].setText("");
+				buttonsLeft[i].setEnabled(true);
+			}
+		}
+	}
 
 	public void displayQuestionResult(int winCase, boolean currentPlayer)
 	{
@@ -108,6 +91,7 @@ public class TicTacToeGui extends JFrame  {
 			buttonsLeft[i].setEnabled(false);
 		}
 	}
+
 	public void  questionButtonEnabler(boolean on)
 	{
 		if(on==true){
@@ -119,6 +103,7 @@ public class TicTacToeGui extends JFrame  {
 			disagreeButton.setEnabled(false);
 		}
 	}
+
 	public void timerRanOutMessage(boolean rightOrWrong)
 	{
 		if(rightOrWrong==true){
@@ -128,7 +113,9 @@ public class TicTacToeGui extends JFrame  {
 		JOptionPane.showMessageDialog(null,"disagree was chosen because time ran out, you were wrong :(");
 		}	
 	}
-	public void machineMessage(boolean rightOrWrong){
+
+	public void machineMessage(boolean rightOrWrong)
+	{
 		if(rightOrWrong==true){
 			JOptionPane.showMessageDialog(null,"the computer was corrent corrent on its guess");
 		}
@@ -136,14 +123,12 @@ public class TicTacToeGui extends JFrame  {
 			JOptionPane.showMessageDialog(null,"the computer was incorrent corrent on its guess");
 		}
 	}
+
 	public TicTacToeGui(GameLogic gameLogic)
 	{	
 		gl= gameLogic;
-		try {
-			loginAccount = new User("UserDB.txt");
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+		try {loginAccount = new User("UserDB.txt");}
+		catch (FileNotFoundException e) {e.printStackTrace();}
 		mainFrame= new CardLayout(0,0);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 471, 336);
@@ -210,25 +195,6 @@ public class TicTacToeGui extends JFrame  {
 				gl.GetQuesiton();
 		    });
 	}
-
-	public void setButtons(char[] gameBoard)
-	{
-		for(int i=0; i<9;i++)
-		{
-			if(gameBoard[i]=='X'){
-				buttonsLeft[i].setText("X");
-				buttonsLeft[i].setEnabled(false);
-			}
-			else if(gameBoard[i]=='O'){
-				buttonsLeft[i].setText("O");
-				buttonsLeft[i].setEnabled(false);
-			}
-			else{
-				buttonsLeft[i].setText("");
-				buttonsLeft[i].setEnabled(true);
-			}
-		}
-	}
 	
 	public void changeToGameMode(char player)
 	{
@@ -243,8 +209,6 @@ public class TicTacToeGui extends JFrame  {
 		{
 			panel.add(buttonsLeft[i]);
 		}
-		    
-		// this should be changeable to whatever player went last, so well need to keep track of that at some point
 		turnMessage = new JLabel("Player "+ player +" please go");
 		turnMessage.setBounds(5, 5, 424, 14);
 		gameModePanel.add(turnMessage);
@@ -259,23 +223,19 @@ public class TicTacToeGui extends JFrame  {
 		JPanel playerSelectPanel = new JPanel();
 		playerSelectPanel.setLayout(null);
 		
-		 PVPButton = new JButton("Single Player");
-		 PVPButton.addActionListener(e ->{
+		PVPButton = new JButton("Single Player");
+		PVPButton.addActionListener(e ->{
 			gl.setMultiplayer(false);
-			//changeToGameMode();
 		});
-		 PVPButton.setBounds(10, 101, 121, 53);
+		PVPButton.setBounds(10, 101, 121, 53);
 		playerSelectPanel.add(PVPButton);
 		
-		 PVEButton = new JButton("Two Players");
-		 PVEButton.setBounds(313, 101, 121, 53);
-		 PVEButton.addActionListener(e ->{
+		PVEButton = new JButton("Two Players");
+		PVEButton.setBounds(313, 101, 121, 53);
+		PVEButton.addActionListener(e ->{
 			gl.setMultiplayer(true);
-			//changeToGameMode();
-			
 		});
 		playerSelectPanel.add(PVEButton);
-		
 		JLabel lblNewLabel = new JLabel("Choose what game mode you want");
 		lblNewLabel.setBounds(134, 22, 250, 79);
 		playerSelectPanel.add(lblNewLabel);
@@ -299,7 +259,7 @@ public class TicTacToeGui extends JFrame  {
 		disagreeButton = new JButton("Disagree");
 		questionPanel.add(disagreeButton, BorderLayout.WEST);
 		
-		 agreeButton = new JButton("  Agree ");
+		agreeButton = new JButton("  Agree ");
 		questionPanel.add(agreeButton, BorderLayout.EAST);
 		String Question = question2;
 		JTextArea questionPlace = new JTextArea();
@@ -341,7 +301,6 @@ public class TicTacToeGui extends JFrame  {
 		JButton contineButton = new JButton("continue");
 		contineButton.setBounds(335, 194, 89, 57);
 		roundOverPanel.add(contineButton);
-		// there are going to be two action listeners one to continue, and one to play again
 		contineButton.addActionListener(e ->{
 			for(int i=0; i<9; i++){
 				buttonsLeft[i].setEnabled(true);
@@ -353,10 +312,9 @@ public class TicTacToeGui extends JFrame  {
 	
 		exitButton.setBounds(10, 194, 89, 57);
 		roundOverPanel.add(exitButton);
-		// need namelogic check here to see what kind of message gets printed
-		JLabel lblNewLabel_1 = new JLabel("Says who won the secret square or says nobody won it");
-		lblNewLabel_1.setBounds(10, 82, 414, 57);
-		roundOverPanel.add(lblNewLabel_1);
+		secretSqaureMessage = new JLabel("Says who won the secret square or says nobody won it");
+		secretSqaureMessage.setBounds(10, 82, 414, 57);
+		roundOverPanel.add(secretSqaureMessage);
 		masterPane.add(roundOverPanel);
 		mainFrame.addLayoutComponent(roundOverPanel, "roundOverPanel");
 		mainFrame.show(masterPane, "roundOverPanel");
@@ -389,7 +347,6 @@ public class TicTacToeGui extends JFrame  {
 		btnLogin.setBounds(317, 196, 107, 55);
 		loginPanel.add(btnLogin);
 		
-		// this is the action listener for the login button, somebody please link this to the login checks
 		btnLogin.addActionListener(e ->
 		{
 			userName = textField.getText();
@@ -404,43 +361,33 @@ public class TicTacToeGui extends JFrame  {
 			}
 		});
 		
-		// this is the action listener for the create account button, somebody please add in the functionality to create a new account
 		btnNewButton.addActionListener(e ->
 		{
 			userName = textField.getText();
 			if(loginAccount.CheckUser(1,userName)==true)
 			{
 				JOptionPane.showMessageDialog(null, "Account already exists");
-				try {
-					loginAccount = new User("UserDB.txt");
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				try {loginAccount = new User("UserDB.txt");} 
+				catch (Exception e1) {e1.printStackTrace();}
 			}
-			else if(userName.isEmpty()==true){
+			else if(userName.isEmpty()==true)
+			{
 				JOptionPane.showMessageDialog(null, "requires user name");
-				try {
-					loginAccount = new User("UserDB.txt");
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				try {loginAccount = new User("UserDB.txt");} 
+				catch (Exception e1) {e1.printStackTrace();}
 			}
-			else if(userName.isEmpty()!=true){
-				
+			else if(userName.isEmpty()!=true)
+			{
 				loginAccount.makeNewUser(userName);
 				try {
 					loginAccount.updateDB();
 				} catch (Exception e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				JOptionPane.showMessageDialog(null, "Account "+userName+" has been made");
 				try {
 					loginAccount = new User("UserDB.txt");
 				} catch (Exception e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}
@@ -449,14 +396,13 @@ public class TicTacToeGui extends JFrame  {
 		mainFrame.addLayoutComponent(loginPanel, "loginPanel");
 		mainFrame.show(masterPane, "loginPanel");
 	}
-	
-	/*
-	 * undocumented question
-	 */
+
 	public void setTimer(String x){
 		timerMessage.setText(x);
 	}
-	public void changeToPlayGameorCheckScoreMode(int[] scoreBoard){
+
+	public void changeToPlayGameorCheckScoreMode(int[] scoreBoard)
+	{
 		JPanel PGOCSM_Panel = new JPanel();
 		PGOCSM_Panel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		PGOCSM_Panel.setLayout(null);
@@ -533,7 +479,6 @@ public class TicTacToeGui extends JFrame  {
 		lblNewLabel_6.setBounds(258, 95, 166, 14);
 		statsPanel.add(lblNewLabel_6);
 		
-		//JButton btnNewButton = new JButton("EXIT");
 		exitButton.setBounds(335, 184, 99, 78);
 		statsPanel.add(exitButton);
 		
