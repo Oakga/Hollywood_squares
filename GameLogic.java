@@ -41,7 +41,7 @@ public class GameLogic {
 		args[0] = new String("QuestionDB.txt");
 		myQuestionBank = new QuestionBank(args);
 
-		UpdateBoardBasedOnAnswer();
+		UpdateBoardBasedOnAnswer(currentSquare);
 		Display.changeToGameMode(getShape());
 		StartRounds();
 	}
@@ -127,11 +127,11 @@ public class GameLogic {
 		
 		if (winner == 0) {
 			SwitchPlayer(true);
-			UpdateBoardBasedOnAnswer();
+			UpdateBoardBasedOnAnswer(currentSquare);
 			PlayerTurnStart();
 		} else {
 			SwitchPlayer(true);
-			UpdateBoardBasedOnAnswer(); // we want it to send the info to the gui pretending it is already the next turn
+			UpdateBoardBasedOnAnswer(currentSquare); // we want it to send the info to the gui pretending it is already the next turn
 			SwitchPlayer(true);
 			// winner = CurrentPlayer;
 			UpdateScoreBoard();// only you can win on your turn
@@ -564,7 +564,7 @@ public class GameLogic {
 			return false;
 	}
 
-	private void UpdateBoardBasedOnAnswer() {
+	private void UpdateBoardBasedOnAnswer(int currentSquare) {
 		Display.setButtons(gameBoard);
 		Display.changeToGameMode(getShape());
 
