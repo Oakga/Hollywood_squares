@@ -292,7 +292,10 @@ public class GameLogic {
 		// this was never used in the activity diagram and was not clear in the class diagram, but i assume it is
 		// meant to control what happens when the timer countdown is complete
 		System.out.println("THIS WAS GENERATED BASED OFF OF A TIMER");
-		return AnswerQuestion(false); // answer the question saying the player disagrees
+		 // answer the question saying the player disagrees
+		boolean answerCorrect = AnswerQuestion(false);
+		Display.timerRanOutMessage(answerCorrect);
+		return answerCorrect;
 /*		int i;
 		if(CurrentPlayer=true){i=1;}
 		else i=2;
