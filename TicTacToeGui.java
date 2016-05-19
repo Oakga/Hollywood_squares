@@ -84,6 +84,24 @@ public class TicTacToeGui extends JFrame  {
 	private String userName;
 	private char winner;
 	
+
+	public void displayQuestionResult(int winCase, boolean currentPlayer)
+	{
+			char player =' ';
+			if(currentPlayer==true)player='X';
+			else player='O';
+			if(winCase==1){
+				JOptionPane.showMessageDialog(null,"that was corret and "+player+" got the square");
+			}
+			if(winCase==2){
+				JOptionPane.showMessageDialog(null,player+" was incorrect, and nobody got the square");
+			}
+			if(winCase==3)
+			{
+				JOptionPane.showMessageDialog(null,player+" was incorrect, so the other player got the square");
+			}
+	}
+
 	public void  questionButtonEnabler(boolean on)
 	{
 		if(on==true){
@@ -295,24 +313,10 @@ public class TicTacToeGui extends JFrame  {
 		questionPanel.add(questionPlace, BorderLayout.CENTER);
 		
 		disagreeButton.addActionListener(e ->{
-			boolean returnValue = true;
-			returnValue=gl.AnswerQuestion(false);
-			if(returnValue==true){
-				JOptionPane.showMessageDialog(null,"that was corret");
-			}
-			if(returnValue==false){
-				JOptionPane.showMessageDialog(null,"that was incorrent");
-			}
+			gl.AnswerQuestion(false);
 		});
 		agreeButton.addActionListener(e ->{
-			boolean returnValue = true;
-			returnValue=gl.AnswerQuestion(true);
-			if(returnValue==true){
-				JOptionPane.showMessageDialog(null,"that was corret");
-			}
-			if(returnValue==false){
-				JOptionPane.showMessageDialog(null,"that was incorrent");
-			}
+			gl.AnswerQuestion(true);
 		});
 		masterPane.add(questionPanel);
 		mainFrame.addLayoutComponent(questionPanel, "questionPanel");
@@ -331,7 +335,7 @@ public class TicTacToeGui extends JFrame  {
 		if(currentPlayer==false){
 			winner='2';
 		}
-		JLabel lblNewLabel = new JLabel("player "+winner+" has won "+"\n"+"the score is "+scoreBoard[0]+" to "+scoreBoard[1]);
+		JLabel lblNewLabel = new JLabel("player "+winner+" has won "+"\n"+"the score is: "+scoreBoard[0]+" to "+scoreBoard[1]);
 		lblNewLabel.setBounds(10, 24, 414, 35);
 		roundOverPanel.add(lblNewLabel);
 		
@@ -351,7 +355,7 @@ public class TicTacToeGui extends JFrame  {
 		exitButton.setBounds(10, 194, 89, 57);
 		roundOverPanel.add(exitButton);
 		// need namelogic check here to see what kind of message gets printed
-		JLabel lblNewLabel_1 = new JLabel("Says who won the secret square,\r\n or says nobody won it");
+		JLabel lblNewLabel_1 = new JLabel("Says who won the secret square,"+ "\n" +" or says nobody won it");
 		lblNewLabel_1.setBounds(10, 82, 414, 57);
 		roundOverPanel.add(lblNewLabel_1);
 		masterPane.add(roundOverPanel);
@@ -465,13 +469,18 @@ public class TicTacToeGui extends JFrame  {
 		PGOCSM_Panel.add(playAgainButton);
 		
         winner=' ';
-        if(scoreBoard[0]==2)winner='1';
-        if(scoreBoard[1]==2)winner='2';
-        try{loginAccount = new User("UserDB.txt");}
-			catch(Exception e){e.printStackTrace();}
-			loginAccount.CheckUser(winner,userName);
-			try{loginAccount.updateDB();}
-			catch(Exception e){e.printStackTrace();}
+        int updateAccount =0;
+        if(scoreBoard[0]==2){
+        	winner='1';
+        	updateAccount=1;
+        }
+        if(scoreBoard[1]==2){
+        	winner='2';
+        	updateAccount=2;
+        }
+      	loginAccount.updateScore(updateAccount);
+      	try{loginAccount.updateDB();}
+      	catch(Exception e){e.printStackTrace();}
 		JLabel lblNewLabel = new JLabel("player "+winner+" won the game!");
 		lblNewLabel.setBounds(134, 22, 184, 79);
 		PGOCSM_Panel.add(lblNewLabel);
