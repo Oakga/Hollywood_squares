@@ -102,7 +102,7 @@ public class GameLogic {
 
 	// Purpose: gui call this method after player give answer
 	private void ContinueTurn() {
-		// StartTimer();
+		StartTimer();
 		if (!Multiplayer && CurrentPlayer) {
 			/*
 			 * throws InterruptedException { Thread.sleep(400); }
@@ -247,6 +247,24 @@ public class GameLogic {
 	private void StartTimer() {
 		// This function needs to be updated to use the timers properly. 
 		TimerObject = new Timer();
+		TimerTask task = new TimerTask() { public void run() { TimeUp(); }};
+		TimerObject.schedule(task,30*1000);
+
+	/*	public TimerTask schedule(final Runnable r, long delay) {
+		    final TimerTask task = new TimerTask() { public void run() { r.run(); }};
+		    t.schedule(task, delay);
+		    return task;
+		}*/
+
+		
+
+
+	/*	public TimerTask schedule(final Runnable r, long delay) {
+		    final 
+		    t.schedule(task, delay);
+		    return task;
+		}
+*/
 		//offically schedule is meant to take in a timertask, but it should hopeuflly work like this, otherwise there is a lamda way to do it i presume
 		// FIX THIS
 		// TimerObject.schedule(TimeUp(),30*1000);// double check that this is 30 seconds
@@ -266,6 +284,7 @@ public class GameLogic {
 	private Boolean TimeUp() {
 		// this was never used in the activity diagram and was not clear in the class diagram, but i assume it is
 		// meant to control what happens when the timer countdown is complete
+		System.out.println("THIS WAS GENERATED BASED OFF OF A TIMER");
 		return AnswerQuestion(false); // answer the question saying the player disagrees
 /*		int i;
 		if(CurrentPlayer=true){i=1;}
@@ -276,6 +295,7 @@ public class GameLogic {
 	private void KillTimer() {
 		// NEEDS TO BE REWRITTEN
 		//Timer.interrupt();
+		System.out.println("TIMER IS CANCLED");
 		TimerObject.cancel();
 		TimerObject.purge();
 	}// 
@@ -347,7 +367,7 @@ public class GameLogic {
 	// Rather that function exists only in the questionbank
 	public boolean AnswerQuestion(Boolean answer) {
 		// Sysetm.out.println("you answered");
-		// KillTimer();
+		KillTimer();
 		boolean returnVal;
 		/*String answerInString;
 		if (answer = true)
