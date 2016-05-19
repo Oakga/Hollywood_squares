@@ -91,11 +91,16 @@ public class TicTacToeGui extends JFrame  {
 	private String userName;
 	private char winner;
 	
+	public timerRanOutMessage(boolean rightOrWrong))
+	{
 
-/*	public void changeTurn(GameLogic gl){
-		if(gl.turn==false)gl.turn=true;
-		if(gl.turn==true)gl.turn=false;
-	}*/
+		if(rightOrWrong==true){
+			JOptionPane.showMessageDialog(null,"disagree was chosen because time ran out, you were right anyway!");
+		}
+		else{
+		JOptionPane.showMessageDialog(null,"disagree was chosen because time ran out, you were wrong :(");
+		}	
+	}
 	public TicTacToeGui(GameLogic gameLogic)
 	{	
 		gl= gameLogic;
@@ -313,6 +318,7 @@ public class TicTacToeGui extends JFrame  {
 			winner='1';
 			try{loginAccount = new User("UserDB.txt");}
 			catch(Exception e){e.printStackTrace();}
+			User.CheckUser(1,userName);
 			loginAccount.updateScore(1);
 			try{loginAccount.updateDB();}
 			catch(Exception e){e.printStackTrace();}
