@@ -544,6 +544,13 @@ public class TicTacToeGui extends JFrame  {
 		mainFrame.show(masterPane,"statsPanel" );
 		
 	}
-	
+	public void timerRanOutMessage(boolean answerCorrect) {
+		 masterPane = new JPanel();
+		JOptionPane.showMessageDialog(masterPane,
+			    "Your Time has run out.",
+			    "Inane warning",
+			    JOptionPane.WARNING_MESSAGE);
+		
+	}
 }
 

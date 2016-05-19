@@ -36,18 +36,18 @@ public class GameLogic {
 		currentSquare = -1;
 		gameBoard = new char[9];
 		scoreBoard = new int[2];
-		SecretSquareSetup();
+		
 		String args[] = new String[1];
 		args[0] = new String("QuestionDB.txt");
 		myQuestionBank = new QuestionBank(args);
 
-		UpdateBoardBasedOnAnswer(currentSquare);
-		Display.changeToGameMode(getShape());
+		UpdateBoardBasedOnAnswer();
+		Display.changeToGameMode(getShape().charAt(0));
 		StartRounds();
 	}
 
 	private void StartRounds() {
-		UpdateGameboard();// initialize the gameboard
+		UpdateGameboard(1);// initialize the gameboard
 		SecretSquareSetup();
 		PlayerTurnStart();
 	}
@@ -159,15 +159,15 @@ public class GameLogic {
 		
 		if (winner == 0) {
 			SwitchPlayer(true);
-			UpdateBoardBasedOnAnswer(currentSquare);
+			UpdateBoardBasedOnAnswer();
 			PlayerTurnStart();
 		} else {
 			SwitchPlayer(true);
-			UpdateBoardBasedOnAnswer(currentSquare); // we want it to send the info to the gui pretending it is already the next turn
+			UpdateBoardBasedOnAnswer(); // we want it to send the info to the gui pretending it is already the next turn
 			SwitchPlayer(true);
 			// winner = CurrentPlayer;
 			UpdateScoreBoard();// only you can win on your turn
-			int gameWinner = GameWonCheck();
+			int gameWinner = GameWonCheck(1);
 			if (gameWinner == -1) {
 				System.out.println("Round over");
 				Display.ToRoundOverFrame(CurrentPlayer, scoreBoard); //show
@@ -216,11 +216,11 @@ public class GameLogic {
 	private void SecretSquareSetup() {
 		// THIS SHOULD ONLY BE ON SOME ROUNDS, THIS REQUIRES A CHECK
 		if (!PickedSecretSquare) {
+		
 			Random rand = new Random();
-			SecretSquare = rand.nextInt((8 - 0) + 1) + 0;
+			this.SecretSquare = rand.nextInt((8 - 0) + 1) + 0;
 		}
-		SecretSquare = -1;
-
+		System.out.println("Secret square:"+SecretSquare);
 	}//
 
 	// Purpose: get current round
@@ -230,28 +230,21 @@ public class GameLogic {
 
 	// Purpose: to get current player play item on board
 	// Changes: return type to char
-	public char getShape() {
-		char s;
+	public String getShape() {
+		String s;
 		if (CurrentPlayer == true)
-			s = 'X';
+			s = "X";
 		else
-			s = 'O';
+			s = "O";
 		return s; // player 2
 	}// done
 
 	// Purpose: Get a prize from prize bank
 	// Changes:Change return type to string
-	public String getPrize() {
-		int i = 0;
-		String Prize = null;
-		while (PrizesGiven[i] != null) {
-			Prize = PrizesGiven[i];
-			PrizesGiven[i] = null;
-			i++;
-			break;
-		}
-		return Prize;
-	}// done
+	public void getPrize() {
+		if(CurrentPlayer==true){PrizesGiven[1]="prize";}
+		else {PrizesGiven[0]="prize";}
+		}// done
 
 	private void SwitchPlayer(Boolean Player) {
 		String p = "player2";
@@ -355,7 +348,7 @@ public class GameLogic {
 	// return -1 if game is tie
 	// return 3 when there is an error and previous cases doesn't match
 	private int RoundWonCheck() {
-		if(checkWinner()==true)
+		if(checkWinner()==1)
 		{
 			if(CurrentPlayer==true){
 				return 2;
@@ -392,10 +385,14 @@ public class GameLogic {
 			System.out.println("right Answer");
 			returnVal = true;
 			Display.displayQuestionResult(1, CurrentPlayer);
+<<<<<<< HEAD
 			SetSquare(getShape());// .charAt(0) 
+=======
+			SetSquare(getShape().charAt(0));// .charAt(0) 
+>>>>>>> 18ec01d20e70a97a9c43a79dba9adab0e059f9d2
 			if(SecretSquare== currentSquare){
 				PickedSecretSquare = true;
-				PrizesGiven[0]="A new Car";
+				getPrize();
 			}
 			// now we need to set the square to the current players value
 		} else{
@@ -408,7 +405,7 @@ public class GameLogic {
 			}
 			// switch the current player temporarily so the next functions work properly
 			CurrentPlayer = !CurrentPlayer;
-			SetSquare(getShape()); // .charAt(0)
+			SetSquare(getShape().charAt(0)); // .charAt(0)
 			int currentPlayerint = 1;
 			if(CurrentPlayer){
 				currentPlayerint = 2;
@@ -495,7 +492,7 @@ public class GameLogic {
 		}
 	}*/
 
-	private void UpdateGameboard() {
+	private void UpdateGameboard(int currentsquare) {
 		for (int i = 0; i < 9; i++) {
 			gameBoard[i] = 'n';
 		}
@@ -508,7 +505,7 @@ public class GameLogic {
 		// in some ways it seems to be the exact same thing as roundWonCheck, in other ways it seems to be the same as GameWonCheck so I just never used it
 		return 0;
 	}*/
-	private boolean checkWinner() {
+	private int checkWinner() {
 			char[][] positions = new char[3][3];
 			int x=0;
 			for(int i=0;i<3;i++){
@@ -529,7 +526,7 @@ public class GameLogic {
 					gameovero++;
 				}
 			}
-			if(gameovero>=5 || gameoverx>=5)return true;
+			if(gameovero>=5 || gameoverx>=5)return 1;
 			
 			// this does the rows
 			for(int i=0;i<3;i++){
@@ -539,10 +536,10 @@ public class GameLogic {
 					if(positions[i][j]=='X')gameoverx++;
 					if(positions[i][j]=='O')gameovero++;
 					if(gameoverx==3){
-						return true;	 
+						return 1;	 
 					}
 					if(gameovero==3){
-						return true;			
+						return 1;			
 					}
 				}
 			}
@@ -556,11 +553,11 @@ public class GameLogic {
 					if(positions[j][i]=='O')gameovero++;
 					if(gameoverx==3)
 					{
-						return true;			
+						return 1;			
 					}
 					if(gameovero==3)
 					{
-						return true;			
+						return 1;			
 					}
 				}
 			}
@@ -573,11 +570,11 @@ public class GameLogic {
 				if(positions[i][i]=='O')gameovero++;
 				if(gameoverx==3)
 				{
-					return true;	
+					return 1;	
 				}							
 				if(gameovero==3)
 				{
-					return true;		
+					return 1;		
 				}
 			}
 						// this is the diagonal test for the top right to bottom left 
@@ -590,24 +587,24 @@ public class GameLogic {
 				if(positions[2-i][i]=='O')gameovero++;
 				if(gameoverx==3)
 				{
-					return true;			
+					return 1;			
 				}
 				if(gameovero==3)
 				{
-					return true;			
+					return 1;			
 				}
 			}
 
-			return false;
+			return 0;
 	}
 
-	private void UpdateBoardBasedOnAnswer(int currentSquare) {
+	private void UpdateBoardBasedOnAnswer() {
 		Display.setButtons(gameBoard);
-		Display.changeToGameMode(getShape());
+		Display.changeToGameMode(getShape().charAt(0));
 
 	}
 
-	private int GameWonCheck() {
+	private int GameWonCheck(int player) {
 		if (scoreBoard[0] == 2) {
 			return 0;
 		} else if (scoreBoard[1] == 2) {
