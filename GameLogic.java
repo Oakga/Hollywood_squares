@@ -167,7 +167,7 @@ public class GameLogic {
 		
 		if (winner == 0) {
 			SwitchPlayer(true);
-			UpdateBoardBasedOnAnswer(currentSquare);
+			UpdateBoardBasedOnAnswer();
 
 			TimerTask nextTurnTimer = new TimerTask() { public void run() { PlayerTurnStart();}};
 			nextStepTimer.schedule(nextTurnTimer,2);
