@@ -103,16 +103,28 @@ public class GameLogic {
 	// Purpose: gui call this method after player give answer
 	private void ContinueTurn() {
 		StartTimer();
-		if (!Multiplayer && CurrentPlayer) {
+		if (!Multiplayer && !CurrentPlayer) {
 			/*
 			 * throws InterruptedException { Thread.sleep(400); }
 			 */
-			Random rand = new Random();
-			int answer = rand.nextInt(1); // 0 is agree 1 is disagree
+			Random randAnswer = new Random();
+			Random randTime = new Random();
+			
+
+			Display.questionButtonEnabler(false);
+			try{
+				Thread.sleep((long)(randTime.nextInt((45 - 2)+1) + 2 * 1000));
+			}
+			catch (InterruptedException e){
+
+			}
+
+			int answer = randAnswer.nextInt(1); // 0 is agree 1 is disagree
 			boolean response = true;
 			if (answer == 1)
 				response = false;
-			AnswerQuestion(response);
+			Display.machineMessage(AnswerQuestion(response));
+			Display.questionButtonEnabler(true);
 			// the computer randomly selects agree or diagree.- that function
 			// will do checks and end turn
 		// A human will click a button, or the timer will run out
@@ -359,6 +371,7 @@ public class GameLogic {
 			//CorrectAnswer = true;
 			System.out.println("right Answer");
 			returnVal = true;
+			Display.displayQuestionResult(1, CurrentPlayer);
 			SetSquare(getShape());// .charAt(0) 
 			if(SecretSquare== currentSquare){
 				PickedSecretSquare = true;
@@ -385,6 +398,10 @@ public class GameLogic {
 				for(int i=0; i<gameBoard.length; i++){
 					gameBoard[i] = tempGameBoard[i];
 				}
+				Display.displayQuestionResult(2, !CurrentPlayer);
+			}
+			else{
+				Display.displayQuestionResult(3, !CurrentPlayer);
 			}
 			CurrentPlayer = !CurrentPlayer;
 			// now we need to see if the opponent can get this position without winning
