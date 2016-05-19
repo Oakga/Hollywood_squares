@@ -64,8 +64,16 @@ public class GameLogic {
 				Random rand1 = new Random();
 				square = rand1.nextInt(8);// select one of the 9 squares from // 0->8				
 			}
+
+			Display.disableBoard();
+			Random randTime = new Random();
+			try{
+				Thread.sleep((long)(randTime.nextInt((10 - 2)+1) + 2 * 1000));
+			}
+			catch (InterruptedException e){ }
 			PickSquare(square);
 		    GetQuesiton();
+		    
 			/*switch (square) {
 				case (0):
 					// Display.topLeftButton.doClick();
@@ -153,14 +161,16 @@ public class GameLogic {
 
 	// Purpose: end turn of the current player (act as a wrapper method)
 	private void endTurn() {
-
+		Timer nextStepTimer= new Timer();
 		int winner = RoundWonCheck();
 		// System.out.println(winner)
 		
 		if (winner == 0) {
 			SwitchPlayer(true);
-			UpdateBoardBasedOnAnswer();
-			PlayerTurnStart();
+			UpdateBoardBasedOnAnswer(currentSquare);
+
+			TimerTask nextTurnTimer = new TimerTask() { public void run() { PlayerTurnStart();}};
+			nextStepTimer.schedule(nextTurnTimer,2);
 		} else {
 			SwitchPlayer(true);
 			UpdateBoardBasedOnAnswer(); // we want it to send the info to the gui pretending it is already the next turn
@@ -171,7 +181,10 @@ public class GameLogic {
 			if (gameWinner == -1) {
 				System.out.println("Round over");
 				Display.ToRoundOverFrame(CurrentPlayer, scoreBoard); //show
-				StartRounds();
+
+		   		TimerTask nextRoundTimer = new TimerTask() { public void run() { StartRounds(); }};
+				nextStepTimer.schedule(nextRoundTimer,2);
+				
 				// round stats
 			} else {
 				System.out.println("Game over");
