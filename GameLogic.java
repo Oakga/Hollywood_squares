@@ -181,7 +181,7 @@ public class GameLogic {
 			if (gameWinner == -1) {
 				System.out.println("Round over");
 				Display.ToRoundOverFrame(CurrentPlayer, scoreBoard); //show
-				
+
 				SwitchPlayer(true);
 		   		TimerTask nextRoundTimer = new TimerTask() { public void run() { StartRounds(); }};
 				nextStepTimer.schedule(nextRoundTimer,2);
@@ -287,7 +287,7 @@ public class GameLogic {
 		// This function needs to be updated to use the timers properly. 
 		TimerObject = new Timer();
 		TimerTask timerup = new TimerTask() { public void run() { TimeUp(); }};
-		int seconds = 5;
+		int seconds = 30;
 		TimerObject.schedule(timerup,seconds*1000);
 
 		TimerTask updateTimer = new TimerTask() {
@@ -474,7 +474,7 @@ public class GameLogic {
 		} else {
 			CorrectAnswer = false;
 		}
-		Display.ToQuestionFrame(Question+"\n"+correctAnswerString);
+		Display.ToQuestionFrame(Question);
 		ContinueTurn();
 	}
 
