@@ -312,7 +312,7 @@ public class TicTacToeGui extends JFrame  {
 	
 		exitButton.setBounds(10, 194, 89, 57);
 		roundOverPanel.add(exitButton);
-		secretSqaureMessage = new JLabel("Says who won the secret square or says nobody won it");
+		JLabel secretSqaureMessage = new JLabel("Says who won the secret square or says nobody won it");
 		secretSqaureMessage.setBounds(10, 82, 414, 57);
 		roundOverPanel.add(secretSqaureMessage);
 		masterPane.add(roundOverPanel);
