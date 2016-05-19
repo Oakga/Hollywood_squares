@@ -351,6 +351,7 @@ public class GameLogic {
 			System.out.println("wrong Answer");
 			returnVal = false;
 			char tempGameBoard[] = new char[9];
+			tempGameBoard = gameBoard;
 			// switch the current player temporarily so the next functions work properly
 			CurrentPlayer = !CurrentPlayer;
 			SetSquare(getShape()); // .charAt(0)
