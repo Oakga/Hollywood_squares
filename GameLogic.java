@@ -385,11 +385,7 @@ public class GameLogic {
 			System.out.println("right Answer");
 			returnVal = true;
 			Display.displayQuestionResult(1, CurrentPlayer);
-<<<<<<< HEAD
-			SetSquare(getShape());// .charAt(0) 
-=======
 			SetSquare(getShape().charAt(0));// .charAt(0) 
->>>>>>> 18ec01d20e70a97a9c43a79dba9adab0e059f9d2
 			if(SecretSquare== currentSquare){
 				PickedSecretSquare = true;
 				getPrize();

@@ -60,15 +60,15 @@ public class TicTacToeGui extends JFrame  {
 	private JLabel turnMessage;
 	private JButton exitButton;
 	private JTextField loginTextField;
-	JButton topLeftButton;
-	JButton topMiddleButton;
-	JButton topRightButton;
-    JButton middleLeftButton;
-	JButton middleRightButton;
-	JButton middleMiddleButton;
-	JButton bottomMiddleButton;
-	JButton bottomLeftButton;
-	JButton bottomRightButton;
+	private JButton topLeftButton;
+	private JButton topMiddleButton;
+	private JButton topRightButton;
+    private JButton middleLeftButton;
+	private JButton middleRightButton;
+	private JButton middleMiddleButton;
+	private JButton bottomMiddleButton;
+	private JButton bottomLeftButton;
+	private JButton bottomRightButton;
 	private JButton agreeButton;
 	private JButton disagreeButton;
 	private JButton PVPButton;
@@ -102,6 +102,12 @@ public class TicTacToeGui extends JFrame  {
 			}
 	}
 
+	public void disableBoard()
+	{
+		for(int i =0;i<9;i++){
+			buttonsLeft[i].setEnabled(false);
+		}
+	}
 	public void  questionButtonEnabler(boolean on)
 	{
 		if(on==true){
@@ -348,7 +354,7 @@ public class TicTacToeGui extends JFrame  {
 		exitButton.setBounds(10, 194, 89, 57);
 		roundOverPanel.add(exitButton);
 		// need namelogic check here to see what kind of message gets printed
-		JLabel lblNewLabel_1 = new JLabel("Says who won the secret square,"+ "\n" +" or says nobody won it");
+		JLabel lblNewLabel_1 = new JLabel("Says who won the secret square or says nobody won it");
 		lblNewLabel_1.setBounds(10, 82, 414, 57);
 		roundOverPanel.add(lblNewLabel_1);
 		masterPane.add(roundOverPanel);
@@ -542,14 +548,6 @@ public class TicTacToeGui extends JFrame  {
 		masterPane.add(statsPanel);
 		mainFrame.addLayoutComponent(statsPanel, "statsPanel");
 		mainFrame.show(masterPane,"statsPanel" );
-		
-	}
-	public void timerRanOutMessage(boolean answerCorrect) {
-		 masterPane = new JPanel();
-		JOptionPane.showMessageDialog(masterPane,
-			    "Your Time has run out.",
-			    "Inane warning",
-			    JOptionPane.WARNING_MESSAGE);
 		
 	}
 }
