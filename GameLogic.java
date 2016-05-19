@@ -39,6 +39,7 @@ public class GameLogic {
 		currentRound = 1;
 		gameBoard = new char[9];
 		scoreBoard = new int[2];
+		Display.changeToGameMode(getShape());
 		StartRounds();
 	}
 
