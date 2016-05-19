@@ -89,6 +89,7 @@ public class TicTacToeGui extends JFrame  {
 	private CardLayout mainFrame;
 	private User loginAccount;
 	private String userName;
+	private char winner;
 	
 
 /*	public void changeTurn(GameLogic gl){
@@ -293,7 +294,7 @@ public class TicTacToeGui extends JFrame  {
 		JPanel roundOverPanel = new JPanel();
 		roundOverPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		roundOverPanel.setLayout(null);
-		char winner =' ';
+		winner =' ';
 		if(currentPlayer==true)winner='1';
 		if(currentPlayer==false)winner='2';
 		// need to check the gl to see what message to print out and what kind of frame this is going to be
@@ -310,7 +311,8 @@ public class TicTacToeGui extends JFrame  {
 				buttonsLeft[i].setEnabled(true);
 				buttonsLeft[i].setText("");
 			}
-			//changeToPlayGameorCheckScoreMode();
+			if(winner=='1')changeToGameMode('O');
+			if(winner=='2')changeToGameMode('X');
 		});
 	
 		exitButton.setBounds(10, 194, 89, 57);
@@ -429,7 +431,7 @@ public class TicTacToeGui extends JFrame  {
 		playAgainButton.setBounds(303, 172, 121, 79);
 		PGOCSM_Panel.add(playAgainButton);
 		
-        char winner=' ';
+        winner=' ';
         if(scoreBoard[0]==2)winner='1';
         if(scoreBoard[1]==2)winner='2';
 
