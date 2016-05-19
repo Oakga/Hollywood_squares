@@ -49,12 +49,6 @@ public class TicTacToeGui extends JFrame  {
 	private User loginAccount;
 	private String userName;
 	private char winner;
-	private JLabel secretSqaureMessage;
-
-	public void setSecretSqaureMessage(String x){
-		secretSqaureMessage.setText(x);
-	}
-	
 	public void setButtons(char[] gameBoard)
 	{
 		for(int i=0; i<9;i++)
