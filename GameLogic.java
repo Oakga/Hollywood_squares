@@ -49,8 +49,7 @@ public class GameLogic {
 	}
 
 
-	private void PlayerTurnStart() {
-		UpdateBoardBasedOnAnswer();
+	public void PlayerTurnStart() {
 		// Display.changeToGameMode(getShape());
 		if (!Multiplayer  && !CurrentPlayer) {
 			Random rand = new Random();
@@ -130,12 +129,14 @@ public class GameLogic {
 			if (gameWinner == -1) {
 				System.out.println("Round over");
 				Display.ToRoundOverFrame(CurrentPlayer, scoreBoard); //show
+				StartRounds();
 				// round stats
 			} else {
 				System.out.println("Game over");
 				Display.changeToPlayGameorCheckScoreMode(scoreBoard); //show game stats
 			}
 		}
+		UpdateBoardBasedOnAnswer();
 		// check if there is a winner or board is full
 		// if a player won or it is full, check the round number and either
 		// display the final score or the round score
