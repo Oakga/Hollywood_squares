@@ -49,6 +49,11 @@ public class TicTacToeGui extends JFrame  {
 	private User loginAccount;
 	private String userName;
 	private char winner;
+	private JLabel secretSqaureMessage;
+
+	public void setSecretSqaureMessage(String x){
+		secretSqaureMessage.setText(x);
+	}
 	
 	public void setButtons(char[] gameBoard)
 	{
@@ -313,9 +318,9 @@ public class TicTacToeGui extends JFrame  {
 	
 		exitButton.setBounds(10, 194, 89, 57);
 		roundOverPanel.add(exitButton);
-		JLabel lblNewLabel_1 = new JLabel("Says who won the secret square or says nobody won it");
-		lblNewLabel_1.setBounds(10, 82, 414, 57);
-		roundOverPanel.add(lblNewLabel_1);
+		secretSqaureMessage = new JLabel("Says who won the secret square or says nobody won it");
+		secretSqaureMessage.setBounds(10, 82, 414, 57);
+		roundOverPanel.add(secretSqaureMessage);
 		masterPane.add(roundOverPanel);
 		mainFrame.addLayoutComponent(roundOverPanel, "roundOverPanel");
 		mainFrame.show(masterPane, "roundOverPanel");
