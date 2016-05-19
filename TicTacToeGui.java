@@ -91,7 +91,7 @@ public class TicTacToeGui extends JFrame  {
 	private String userName;
 	private char winner;
 	
-	public timerRanOutMessage(boolean rightOrWrong))
+	public timerRanOutMessage(boolean rightOrWrong)
 	{
 
 		if(rightOrWrong==true){
