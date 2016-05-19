@@ -247,8 +247,15 @@ public class GameLogic {
 	private void StartTimer() {
 		// This function needs to be updated to use the timers properly. 
 		TimerObject = new Timer();
-		TimerTask task = new TimerTask() { public void run() { TimeUp(); }};
-		TimerObject.schedule(task,30*1000);
+		TimerTask timerup = new TimerTask() { public void run() { TimeUp(); }};
+		int seconds = 3;
+		TimerObject.schedule(timerup,seconds*1000);
+
+		TimerTask updateTimer = new TimerTask() {
+   			int i = 0;
+   			public void run() { i++; Display.setTimer("Time Left: " + (seconds-i) + " seconds"); }
+   		};
+		TimerObject.schedule(updateTimer,0, 1000);
 
 	/*	public TimerTask schedule(final Runnable r, long delay) {
 		    final TimerTask task = new TimerTask() { public void run() { r.run(); }};
