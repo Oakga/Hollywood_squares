@@ -190,9 +190,9 @@ public class GameLogic {
 	public char getShape() {
 		char s;
 		if (CurrentPlayer = true)
-			s = 'O';
-		else
 			s = 'X';
+		else
+			s = 'O';
 		return s; // player 2
 	}// done
 
@@ -299,46 +299,6 @@ public class GameLogic {
 			winnerSign = gameBoard[0];
 		else if (checkWinner(2, 4, 6))
 			winnerSign = gameBoard[2];
-		/*if (checkWinner())
-			winnerSign = gameBoard[0];
-		else if (checkWinner())
-			winnerSign = gameBoard[3];
-		else if (checkWinner())
-			winnerSign = gameBoard[6];
-		else if (checkWinner())
-			winnerSign = gameBoard[0];
-		else if (checkWinner())
-			winnerSign = gameBoard[1];
-		else if (checkWinner())
-			winnerSign = gameBoard[2];
-		else if (checkWinner())
-			winnerSign = gameBoard[0];
-		else if (checkWinner())
-			winnerSign = gameBoard[2];*/
-
-/*		if (winnerSign == getShape()){
-			if(CurrentPlayer){
-				return 1;
-			}
-			else{
-				return 0;
-			}
-		}
-		else if(winnerSign != "n"){
-			return ((CurrentPlayer+1)%2);
-		}
-		else{
-			for(int i=0;i<9;i++){
-				if(CheckSquareEmpty(i)){
-					return -1;
-					break;
-				}
-			}
-			return 2; // there is a tie since all pieces are non empty
-		}
-		
-	}// done*/
-
 		if (winnerSign == 'O') {
 			return 1;
 		} else if (winnerSign == 'X') {
