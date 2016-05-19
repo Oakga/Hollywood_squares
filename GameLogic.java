@@ -124,11 +124,13 @@ public class GameLogic {
 
 		int winner = RoundWonCheck();
 		// System.out.println(winner)
-		UpdateBoardBasedOnAnswer();
+		
 		if (winner == 0) {
 			SwitchPlayer(true);
+			UpdateBoardBasedOnAnswer();
 			PlayerTurnStart();
 		} else {
+			UpdateBoardBasedOnAnswer();
 			// winner = CurrentPlayer;
 			UpdateScoreBoard();// only you can win on your turn
 			int gameWinner = GameWonCheck();
